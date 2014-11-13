@@ -5,22 +5,24 @@
 (function () {
     "use strict";
  
-    var pkg     = require("./package.json"),
-        del     = require("del"),
-        yargs   = require("yargs"),
-        exec    = require("exec"),
-        fs      = require("fs"),
-        gulp    = require("gulp"),
-        bump    = require("gulp-bump"),
-        header  = require("gulp-header"),
-        qunit   = require("gulp-qunit"),
-        uglify  = require("gulp-uglifyjs"),
-        jshint  = require('gulp-jshint'),
-        gutil   = require("gulp-util"),
-        zip     = require("gulp-zip"),
-        replace = require("gulp-replace"),
-        gsync   = require("gulp-sync"),
-        sync    = gsync(gulp).sync;
+    var pkg       = require("./package.json"),
+        del       = require("del"),
+        yargs     = require("yargs"),
+        exec      = require("exec"),
+        fs        = require("fs"),
+        gulp      = require("gulp"),
+        bump      = require("gulp-bump"),
+        header    = require("gulp-header"),
+        qunit     = require("gulp-qunit"),
+        uglify    = require("gulp-uglify"),
+        sourcemap = require("gulp-sourcemaps"),
+        jshint    = require('gulp-jshint'),
+        gutil     = require("gulp-util"),
+        zip       = require("gulp-zip"),
+        rename    = require("gulp-rename"),
+        replace   = require("gulp-replace"),
+        gsync     = require("gulp-sync"),
+        sync      = gsync(gulp).sync;
 
     var version = yargs.argv.type || "patch";
 
@@ -38,13 +40,6 @@
                 datetime: gutil.date("yyyy-mm-dd HH:MM"),
                 year: gutil.date("yyyy")
             }
-        },
-        files: {
-            in: [ 
-                './src/needle.js',
-                './src/needle.lite.js',
-            ],
-            out: 'needle'
         }
     };
 
@@ -70,7 +65,7 @@
     });
 
     gulp.task("zip", [ "tmp-create" ], function () {
-        var filename = settings.files.out + ".zip";
+        var filename = "needle.zip";
 
         return gulp.src("./dist/*")
             .pipe(zip(filename))
@@ -168,7 +163,7 @@
             .pipe(jshint.reporter('default'));
     });
 
-    gulp.task("test", function () {
+    gulp.task("qunit", function () {
         return gulp.src("./tests/test-runner.html")
             .pipe(qunit());
     });
@@ -177,6 +172,8 @@
         settings.banner.vars.pkg = getPackageJson();
 
         return gulp.src('./src/*.js')
+            .pipe(rename({ suffix: ".min" }))
+            .pipe(sourcemap.init())
             .pipe(uglify({
                 compress: {
                     warnings: false
@@ -184,11 +181,12 @@
                 mangle: true,
                 outSourceMap: true
             }))
+            .pipe(sourcemap.write('.'))
             .pipe(gulp.dest('./dist/'));
     });
 
     gulp.task("copy", function () {
-        return gulp.src(settings.files.in)
+        return gulp.src('./src/*.js')
             .pipe(gulp.dest('./dist/'));
     });
 
@@ -227,18 +225,17 @@
 
     gulp.task("test", sync([
         "lint",
-        "test"
+        "qunit"
     ], 
     "building"));
 
     gulp.task("build", sync([
         "lint",
-        "test-dev", 
+        "qunit", 
         "clean", 
         "copy", 
         "uglify",
-        "header",
-        "test-dist"
+        "header"
     ], 
     "building"));
 
@@ -246,7 +243,7 @@
       [ "fail-if-not-master", "fail-if-dirty" ],
         "git-pull",
         "lint",
-        "test",
+        "qunit",
         "bump",
         "license",
         "clean",
@@ -278,20 +275,22 @@
 NPM Installation
 ----------------
 
-npm install --save-dev del    
-npm install --save-dev yargs  
-npm install --save-dev exec   
-npm install --save-dev fs     
-npm install --save-dev gulp   
-npm install --save-dev bump   
-npm install --save-dev header 
-npm install --save-dev qunit  
-npm install --save-dev uglify 
-npm install --save-dev jshint 
-npm install --save-dev gutil  
-npm install --save-dev zip    
-npm install --save-dev replace
-npm install --save-dev gsync  
+npm install --save-dev del
+npm install --save-dev yargs
+npm install --save-dev exec
+npm install --save-dev fs
+npm install --save-dev gulp
+npm install --save-dev gulp-bump
+npm install --save-dev gulp-header
+npm install --save-dev gulp-qunit
+npm install --save-dev gulp-uglify
+npm install --save-dev gulp-sourcemaps
+npm install --save-dev gulp-jshint
+npm install --save-dev gulp-util
+npm install --save-dev gulp-zip
+npm install --save-dev gulp-rename
+npm install --save-dev gulp-replace
+npm install --save-dev gulp-sync
 
 Gh-pages creation
 -----------------
