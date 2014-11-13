@@ -1,0 +1,6 @@
+{
+  "name": "needle",
+  "version": "0.0.0",
+  "homepage": "https://needle.jaysalvat.com",
+  "main": "./dist/needle.min.js"
+}
