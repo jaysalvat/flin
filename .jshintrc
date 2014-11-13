@@ -1,0 +1,7 @@
+{
+    "laxbreak": true,
+    "globals": {
+        "module": true,
+        "define": true
+    }
+}
