@@ -1,7 +1,3 @@
-/*
-Needle lite
-Copyright (c) 2014 Jay Salvat
-*/
 
 /* globals define: true, module: true */
 /* jshint laxbreak: true */

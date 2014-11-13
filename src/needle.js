@@ -1,7 +1,3 @@
-/*
-Needle
-Copyright (c) 2014 Jay Salvat
-*/
 
 /* globals define: true, module: true */
 /* jshint laxbreak: true */
@@ -211,7 +207,6 @@ Copyright (c) 2014 Jay Salvat
     $.fn = {
         set: function (key, value) {
             return this.each(function () {
-                console.log(value);
                 if (key[0] === '@') {
                     if (value === undefined) {
                         this.removeAttribute(key.slice(1));
