@@ -1,5 +1,5 @@
 /*! Pin - Copyright (c) 2014 Jay Salvat
- *  v0.0.1 released 2014-11-14 01:24
+ *  v0.0.2 released 2014-11-14 11:21
  *  http://pin.jaysalvat.com
  */
 
@@ -314,10 +314,11 @@
 
             var elmts = $(this).map(function () {
                 var matchesSelector = 
-                    this.webkitMatchesSelector ||
-                    this.mozMatchesSelector ||
-                    this.oMatchesSelector ||
-                    this.matchesSelector;
+                    this.webkitMatchesSelector
+                 || this.mozMatchesSelector
+                 || this.msMatchesSelector
+                 || this.oMatchesSelector
+                 || this.matchesSelector;
 
                 if (this === selector || matchesSelector.call(this, selector)) {
                     return this;
@@ -492,7 +493,7 @@
         trigger: function (name) {
             var evt = document.createEvent("HTMLEvents");
 
-            evt.initEvent(name);
+            evt.initEvent(name, true, true);
             
             return this.each(function () {
                 this.dispatchEvent(evt);
