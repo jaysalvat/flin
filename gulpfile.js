@@ -153,7 +153,7 @@
 
     gulp.task("license", function () {
         return gulp.src([ "./LICENSE", "./README.md" ])
-            .pipe(replace(/\(c\) (\d{4})/g, "$1" + gutil.date("yyyy")))
+            .pipe(replace(/(Copyright )(\d{4})/g, "$1" + gutil.date("yyyy")))
             .pipe(gulp.dest("."));
     });
 
