@@ -2,7 +2,6 @@ Pin. A tiny Javascript library.
 ===============================
 
 [![Build Status](https://travis-ci.org/jaysalvat/pin.png?branch=master)](https://travis-ci.org/jaysalvat/pin)
-[![NPM version](https://badge.fury.io/js/pin.svg)](http://badge.fury.io/js/pin)
 [![Bower version](https://badge.fury.io/bo/pin.svg)](http://badge.fury.io/bo/pin)
 
 Pin is a tiny Javascript library with some jQuery features:
