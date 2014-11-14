@@ -1,15 +1,15 @@
 /*
-Needle
+Pin
 Copyright (c) 2014 Jay Salvat
 */
 
-/* global Needle:true, QUnit:true */
+/* global Pin:true, QUnit:true */
 
 (function ($) {
     "use strict";
 
     QUnit.test('Neddle', function (assert) {
-        assert.ok($().__needle);
+        assert.ok($().__pin);
         assert.equal($().length, 0);
     });
 
@@ -454,4 +454,4 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($$.get('@id'), undefined);
     });
 
-})(Needle);
+})(Pin);

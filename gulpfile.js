@@ -29,9 +29,9 @@
     var settings = {
         banner: {
             content: [
-                '/*! Needle - Copyright (c) <%= year %> Jay Salvat',
+                '/*! Pin - Copyright (c) <%= year %> Jay Salvat',
                 ' *  v<%= pkg.version %> released <%= datetime %>',
-                ' *  http://needle.jaysalvat.com',
+                ' *  http://pin.jaysalvat.com',
                 ' */',
                 '',
             ].join("\n"),
@@ -65,7 +65,7 @@
     });
 
     gulp.task("zip", [ "tmp-create" ], function () {
-        var filename = "needle.zip";
+        var filename = "pin.zip";
 
         return gulp.src("./dist/*")
             .pipe(zip(filename))

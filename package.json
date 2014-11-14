@@ -1,16 +1,16 @@
 {
-  "name": "needle",
+  "name": "pin",
   "version": "0.0.0",
-  "description": "Needle. A tiny Javascript library.",
-  "homepage": "http://needle.jaysalvat.com",
-  "main": "./dist/needle.min.js",
+  "description": "Pin. A tiny Javascript library.",
+  "homepage": "http://pin.jaysalvat.com",
+  "main": "./dist/pin.min.js",
   "scripts": {
     "test": "gulp test",
     "build": "gulp build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jaysalvat/needle"
+    "url": "https://github.com/jaysalvat/pin"
   },
   "keywords": [
     "javascript",

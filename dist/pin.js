@@ -1,3 +1,7 @@
+/*! Pin - Copyright (c) 2014 Jay Salvat
+ *  v0.0.0 released 2014-11-14 01:18
+ *  http://pin.jaysalvat.com
+ */
 
 /* globals define: true, module: true */
 /* jshint laxbreak: true */
@@ -10,17 +14,17 @@
     } else if (typeof define === "function" && define.amd) {
         define([], factory);
     } else {
-        context.Needle = factory();
+        context.Pin = factory();
 
         if (context.$ === undefined) {
-            context.$ = context.Needle;
+            context.$ = context.Pin;
         }
     }
 })(this, function() {
     "use strict";
 
     var $,
-        needle = {}, 
+        pin = {}, 
         div    = document.createElement('div'),
         table  = document.createElement('table'), 
         tbody  = document.createElement('tbody'),
@@ -38,14 +42,14 @@
         cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
 
-    needle.init = function(selector, context) {
+    pin.init = function(selector, context) {
         var elmts;
 
         if (!selector) {
-            return new needle.Collection();
+            return new pin.Collection();
         }
 
-        else if (needle.isCollection(selector)) {
+        else if (pin.isCollection(selector)) {
             return selector;
         }
 
@@ -61,7 +65,7 @@
             selector = selector.trim();
 
             if (selector[0] === '<') {
-                elmts = needle.fragment(selector);
+                elmts = pin.fragment(selector);
             }
 
             else if (context) {
@@ -81,17 +85,17 @@
             elmts = [ selector ];
         }
 
-        return new needle.Collection(elmts);
+        return new pin.Collection(elmts);
     };
 
-    needle.isCollection = function(object) {
-        return (object.__needle);
+    pin.isCollection = function(object) {
+        return (object.__pin);
     };
 
-    needle.Collection = function(elmts) {
+    pin.Collection = function(elmts) {
         elmts = elmts || [];
         elmts = [].slice.call(elmts);
-        elmts.__needle = true;
+        elmts.__pin = true;
 
         for (var k in $.fn) {
             if ($.fn.hasOwnProperty(k)) {
@@ -102,7 +106,7 @@
         return elmts;
     };
 
-    needle.fragment = function (html) {
+    pin.fragment = function (html) {
         var container,
             children,
             elmts,
@@ -125,7 +129,7 @@
     };
 
     $ = function(selector, context) {
-        return needle.init(selector, context);
+        return pin.init(selector, context);
     };
     
     $.each = function (elmts, callback) {

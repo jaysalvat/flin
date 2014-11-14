@@ -1,9 +1,9 @@
-Needle
-======
+Pin
+===
 
-[![Build Status](https://travis-ci.org/jaysalvat/needle.png?branch=master)](https://travis-ci.org/jaysalvat/needle)
+[![Build Status](https://travis-ci.org/jaysalvat/pin.png?branch=master)](https://travis-ci.org/jaysalvat/pin)
 
-Needle. A tiny Javascript library.
+Pin. A tiny Javascript library.
 
-Needle is a tiny Javascript library developped for my own needs.
+Pin is a tiny Javascript library developed for my own needs.
 More information soon...

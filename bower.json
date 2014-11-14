@@ -1,6 +1,6 @@
 {
-  "name": "needle",
+  "name": "pin",
   "version": "0.0.0",
-  "homepage": "https://needle.jaysalvat.com",
-  "main": "./dist/needle.min.js"
+  "homepage": "https://pin.jaysalvat.com",
+  "main": "./dist/pin.min.js"
 }
