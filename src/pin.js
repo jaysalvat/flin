@@ -310,10 +310,11 @@
 
             var elmts = $(this).map(function () {
                 var matchesSelector = 
-                    this.webkitMatchesSelector ||
-                    this.mozMatchesSelector ||
-                    this.oMatchesSelector ||
-                    this.matchesSelector;
+                    this.webkitMatchesSelector
+                 || this.mozMatchesSelector
+                 || this.msMatchesSelector
+                 || this.oMatchesSelector
+                 || this.matchesSelector;
 
                 if (this === selector || matchesSelector.call(this, selector)) {
                     return this;
@@ -488,7 +489,7 @@
         trigger: function (name) {
             var evt = document.createEvent("HTMLEvents");
 
-            evt.initEvent(name);
+            evt.initEvent(name, true, true);
             
             return this.each(function () {
                 this.dispatchEvent(evt);
