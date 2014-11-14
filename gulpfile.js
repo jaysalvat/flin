@@ -24,7 +24,7 @@
         gsync     = require("gulp-sync"),
         sync      = gsync(gulp).sync;
 
-    var version = yargs.argv.type || "patch";
+    var bumpVersion = yargs.argv.type || "patch";
 
     var settings = {
         banner: {
@@ -145,9 +145,11 @@
 
     gulp.task("bump", function () {
         return gulp.src([ "package.json", "bower.json" ])
-            .pipe(bump({
-                type: version
-            }))
+            .pipe(bump(
+                /^[a-z]+$/.test(bumpVersion) 
+                    ? { type: bumpVersion } 
+                    : { version: bumpVersion }
+            ))
             .pipe(gulp.dest("."));
     });
 
