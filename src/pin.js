@@ -3,11 +3,11 @@
 /* jshint laxbreak: true */
 
 (function(context, factory) {
-    "use strict";
+    'use strict';
 
-    if (typeof module !== "undefined" && module.exports) {
+    if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
-    } else if (typeof define === "function" && define.amd) {
+    } else if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -17,7 +17,7 @@
         }
     }
 })(this, function() {
-    "use strict";
+    'use strict';
 
     var $,
         pin = {}, 
@@ -50,17 +50,17 @@
         }
 
         else if (selector instanceof Function) {
-            return document.addEventListener("DOMContentLoaded", selector);
+            return document.addEventListener('DOMContentLoaded', selector);
         }
 
         else if (selector instanceof Array) {
             elmts = selector;
         }
 
-        else if (typeof selector === 'string') {
+        else if (typeof selector == 'string') {
             selector = selector.trim();
 
-            if (selector[0] === '<') {
+            if (selector[0] == '<') {
                 elmts = pin.fragment(selector);
             }
 
@@ -77,7 +77,7 @@
             elmts = selector;
         }
 
-        else if (typeof selector === 'object') {
+        else if (typeof selector == 'object') {
             elmts = [ selector ];
         }
 
@@ -89,8 +89,7 @@
     };
 
     pin.Collection = function(elmts) {
-        elmts = elmts || [];
-        elmts = [].slice.call(elmts);
+        elmts = [].slice.call(elmts || []);
         elmts.__pin = true;
 
         for (var k in $.fn) {
@@ -137,7 +136,7 @@
     $.each = function (elmts, callback) {
         var i, k;
 
-        if (typeof elmts.length === 'number') {
+        if (typeof elmts.length == 'number') {
             for (i = 0; i < elmts.length; i++) {
                 if (callback.call(elmts[i], i, elmts[i]) === false) {
                     return elmts;
@@ -158,30 +157,16 @@
     };
 
     $.map = function (elmts, callback) {
-        var values = [], 
-            value, 
-            i, k;
+        var values = [],
+            value;
 
-        if (typeof elmts.length === 'number') {
-            for (i = 0; i < elmts.length; i++) {
-                value = callback.call(elmts[i], elmts[i], i);
+        $(elmts).each(function (i) {
+            value = callback.call(this, this, i);
 
-                if (value !== null) {
-                    values.push(value);
-                }
+            if (value !== null) {
+                values.push(value);
             }
-
-        } else {
-            for (k in elmts) {
-                if (elmts.hasOwnProperty(k)) {
-                    value = callback.call(elmts[k], elmts[k], k);
-                    
-                    if (value !== null) {
-                        values.push(value);
-                    }
-                }
-            }
-        }
+        });
 
         return values;
     };
@@ -191,14 +176,14 @@
             args = [].slice.call(arguments),
             i, k;
 
-        if (typeof deep === 'boolean') {
+        if (typeof deep == 'boolean') {
             args.shift();
         }
 
         for (i = 0; i < args.length; i++) {
             for (k in args[i]) {
                 if (args[i].hasOwnProperty(k)) {
-                    if (deep === true && typeof args[i][k] === 'object') {
+                    if (deep === true && typeof args[i][k] == 'object') {
                         obj[k] = $.extend(deep, obj[k], args[i][k]);
                     } else {
                         obj[k] = args[i][k];
@@ -213,7 +198,7 @@
     $.fn = {
         set: function (key, value) {
             return this.each(function () {
-                if (key[0] === '@') {
+                if (key[0] == '@') {
                     if (value === undefined) {
                         this.removeAttribute(key.slice(1));
                     } else {
@@ -226,7 +211,7 @@
         },
 
         get: function (key) {
-            if (key[0] === '@') {
+            if (key[0] == '@') {
                 return this[0].getAttribute(key.slice(1));
             }
 
@@ -238,11 +223,7 @@
         },
 
         map: function (callback) {
-            var elmts = $.map(this, function(elmt, i) { 
-                return callback.call(elmt, i, elmt); 
-            });
-
-            return $(elmts);
+            return $($.map(this, callback));
         },
 
         slice: function () {
@@ -250,7 +231,7 @@
         },
 
         eq: function (idx) {
-            return this.slice(idx, + idx + 1);
+            return this.slice(idx, idx + 1);
         },
 
         index: function (elmt) {
@@ -267,7 +248,7 @@
             if (!selector) {
                 elmts = [];
 
-            } else if (this.length === 1) {
+            } else if (this.length == 1) {
                 elmts = this[0].querySelectorAll(selector);
 
             } else {
@@ -295,18 +276,19 @@
 
         parents: function (selector, firstOnly){
             var elmts   = this,
-                parents = [];
+                parents = [],
+                parent;
 
-            if (typeof selector === 'boolean')  {
+            if (typeof selector == 'boolean')  {
                 firstOnly = selector;
                 selector  = null;
             }
 
             function findParents (elmts) {
                 return $.map(elmts, function () {
-                    var parent = this.parentNode;
+                    parent = this.parentNode;
 
-                    if (parent && parent.nodeType !== 9 && parents.indexOf(parent) < 0) {
+                    if (parent && parent.nodeType != 9 && parents.indexOf(parent) < 0) {
                         
                         if (!selector || $(parent).is(selector)) {
                             parents.push(parent);
@@ -335,19 +317,21 @@
         },
 
         is: function (selector) {
+            var elmts,
+                matchesSelector;
+
             if (!selector) {
                 return false;
             }
 
-            var elmts = $(this).map(function () {
-                var matchesSelector = 
-                    this.webkitMatchesSelector
-                 || this.mozMatchesSelector
-                 || this.msMatchesSelector
-                 || this.oMatchesSelector
-                 || this.matchesSelector;
+            elmts = $(this).map(function () {
+                matchesSelector = this.webkitMatchesSelector
+                               || this.mozMatchesSelector
+                               || this.msMatchesSelector
+                               || this.oMatchesSelector
+                               || this.matchesSelector;
 
-                if (this === selector || matchesSelector.call(this, selector)) {
+                if (this == selector || matchesSelector.call(this, selector)) {
                     return this;
                 }
 
@@ -470,10 +454,11 @@
 
         on: function (name, handler, capture) {
             var e   = getEventInfo(name),
-                key = e.name + '.' + e.ns;
+                key = e.name + '.' + e.ns,
+                handlerList;
 
             return this.each(function () {
-                var handlerList  = this.__handlers || {};
+                handlerList      = this.__handlers || {};
                 handlerList[key] = handlerList[key] || [];
                 handlerList[key].push(handler);
                 
@@ -484,11 +469,11 @@
         },
 
         off: function (name, capture) {
-            var e = getEventInfo(name),
-                handlers;
+            var e = getEventInfo(name);
 
             return this.each(function () {
-                var  k, i, x;
+                var k, i, x,
+                    handlers;
 
                 if (!this.__handlers) {
                     return;
@@ -500,10 +485,10 @@
                     if (handlers.hasOwnProperty(k)) {
                         i = getEventInfo(k);
 
-                        if ((e.name === '*'    
-                                && (e.ns === '*' || e.ns === i.ns)) 
-                         || (e.name === i.name 
-                                && (e.ns === i.ns || e.ns === '*'))
+                        if ((e.name == '*'    
+                                && (e.ns == '*'  || e.ns == i.ns)) 
+                         || (e.name == i.name 
+                                && (e.ns == i.ns || e.ns == '*'))
                          ) {
 
                             for (x = 0; x < handlers[k].length; x++) {
@@ -518,7 +503,7 @@
         },
 
         trigger: function (name) {
-            var evt = document.createEvent("HTMLEvents");
+            var evt = document.createEvent('HTMLEvents');
 
             evt.initEvent(name, true, true);
             
@@ -538,7 +523,7 @@
     }
 
     function getClassRe (className) {
-        return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+        return new RegExp('(^|\\s+)' + className + '(\\s+|$)');
     }
 
     function getComputedStyle (elmt) {
@@ -562,7 +547,7 @@
              prefixed = '-' + cssPrefix + '-' + property;
         }
 
-        if (cssStyles.indexOf(prefixed.toLowerCase()) !== -1) {
+        if (cssStyles.indexOf(prefixed.toLowerCase()) != -1) {
             return prefixed;
         }
 
