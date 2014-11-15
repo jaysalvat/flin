@@ -85,12 +85,12 @@
     };
 
     pin.isCollection = function(object) {
-        return (object.__pin);
+        return (object._pin);
     };
 
     pin.Collection = function(elmts) {
         elmts = [].slice.call(elmts || []);
-        elmts.__pin = true;
+        elmts._pin = true;
 
         for (var k in $.fn) {
             if ($.fn.hasOwnProperty(k)) {
@@ -455,16 +455,24 @@
         on: function (name, handler, capture) {
             var e   = getEventInfo(name),
                 key = e.name + '.' + e.ns,
-                handlerList;
+                handlerList,
+                handlerProxy,
+                args;
 
             return this.each(function () {
-                handlerList      = this.__handlers || {};
-                handlerList[key] = handlerList[key] || [];
-                handlerList[key].push(handler);
-                
-                this.__handlers = handlerList;
+                handlerProxy = function (e) {
+                    args = e._args || [];
+                    args.unshift(e);
 
-                this.addEventListener(e.name, handler, capture);
+                    handler.apply(this, args);
+                };
+
+                handlerList      = this._handlers  || {};
+                handlerList[key] = handlerList[key] || [];
+                handlerList[key].push(handlerProxy);
+                
+                this._handlers = handlerList;
+                this.addEventListener(e.name, handlerProxy, capture);
             });
         },
 
@@ -475,11 +483,11 @@
                 var k, i, x,
                     handlers;
 
-                if (!this.__handlers) {
+                if (!this._handlers) {
                     return;
                 }
 
-                handlers = this.__handlers;
+                handlers = this._handlers;
 
                 for (k in handlers) {
                     if (handlers.hasOwnProperty(k)) {
@@ -502,11 +510,12 @@
             });
         },
 
-        trigger: function (name) {
+        trigger: function (name, args) {
             var evt = document.createEvent('HTMLEvents');
 
             evt.initEvent(name, true, true);
-            
+            evt._args = args;
+
             return this.each(function () {
                 this.dispatchEvent(evt);
             });

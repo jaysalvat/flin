@@ -9,7 +9,7 @@ Copyright (c) 2014 Jay Salvat
     "use strict";
 
     QUnit.test('Neddle', function (assert) {
-        assert.ok($().__pin);
+        assert.ok($()._pin);
         assert.equal($().length, 0);
     });
 
@@ -354,6 +354,11 @@ Copyright (c) 2014 Jay Salvat
             $$.on('bar.ns2', function () {
                 bar++;
             });
+
+            $$.on('baz', function (e, a, b) {
+                console.log(a, b);
+                baz = a + b;
+            });
         }
 
         // Trigger
@@ -410,6 +415,13 @@ Copyright (c) 2014 Jay Salvat
         $$.trigger('bar');
         assert.equal(foo, 0);
         assert.equal(bar, 0);
+
+        resetEvents($$);
+        assert.equal(baz, 0);
+        $$.trigger('baz', [ 10, 20 ]);
+        assert.equal(baz, 30);
+        $$.trigger('baz', [ 50, 50 ]);
+        assert.equal(baz, 100);
     });
 
     QUnit.test('Extend', function (assert) {
