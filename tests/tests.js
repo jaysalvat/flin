@@ -198,7 +198,7 @@ Copyright (c) 2014 Jay Salvat
 
         $$ = $('#one li');
 
-        $filtered = $$.map(function (i, elmt) {
+        $filtered = $$.map(function (elmt, i) {
             if (i%2) {
                 return elmt;
             }
@@ -208,7 +208,7 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($filtered.eq(0)[0].textContent, 'item 1-2');
         assert.equal($filtered.eq(1)[0].textContent, 'item 1-4');
 
-        $filtered = $$.map(function (i, elmt) {
+        $filtered = $$.map(function (elmt, i) {
             if (i%2) {
                 return null;
             }
