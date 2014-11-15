@@ -34,8 +34,9 @@
             'td':    tr, 
             'th':    tr
         },
-        tagRe     = /^\s*<(\w+|!)[^>]*>/,
-        cssStyles = getCssStyles(),
+        tagRe = /^\s*<(\w+|!)[^>]*>/;
+
+    var cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
 
     pin.init = function(selector, context) {
@@ -45,7 +46,7 @@
             return new pin.Collection();
         }
 
-        else if (pin.isCollection(selector)) {
+        else if (selector._pin) {
             return selector;
         }
 
@@ -84,10 +85,6 @@
         return new pin.Collection(elmts);
     };
 
-    pin.isCollection = function(object) {
-        return (object._pin);
-    };
-
     pin.Collection = function(elmts) {
         elmts = [].slice.call(elmts || []);
         elmts._pin = true;
@@ -114,9 +111,7 @@
         container = containers[name];
         container.innerHTML = html;
 
-        children = [].slice.call(container.childNodes);
-
-        elmts = $.each(children, function() {
+        elmts = $(children).each(function() {
             container.removeChild(this);
         });
 
@@ -196,28 +191,6 @@
     };
 
     $.fn = {
-        set: function (key, value) {
-            return this.each(function () {
-                if (key[0] == '@') {
-                    if (value === undefined) {
-                        this.removeAttribute(key.slice(1));
-                    } else {
-                        this.setAttribute(key.slice(1), value);
-                    }
-                } else {
-                    this[key] = value;
-                }
-            });
-        },
-
-        get: function (key) {
-            if (key[0] == '@') {
-                return this[0].getAttribute(key.slice(1));
-            }
-
-            return this[0][key]; 
-        },
-
         each: function (callback) {
             return $.each(this, callback);
         },
@@ -228,18 +201,6 @@
 
         slice: function () {
             return $([].slice.apply(this, arguments));
-        },
-
-        eq: function (idx) {
-            return this.slice(idx, idx + 1);
-        },
-
-        index: function (elmt) {
-            if (elmt) {
-                return this.indexOf($(elmt)[0]);
-            }
-
-            return this.parent.childNodes.indexOf(this[0]);
         },
 
         find: function (selector) {
@@ -310,6 +271,18 @@
             }
 
             return $(parents);
+        },
+        
+        eq: function (idx) {
+            return this.slice(idx, idx + 1);
+        },
+
+        index: function (elmt) {
+            if (elmt) {
+                return this.indexOf($(elmt)[0]);
+            }
+
+            return this.parent.childNodes.indexOf(this[0]);
         },
 
         has: function (selector) {
@@ -519,6 +492,28 @@
             return this.each(function () {
                 this.dispatchEvent(evt);
             });
+        },
+
+        set: function (key, value) {
+            return this.each(function () {
+                if (key[0] == '@') {
+                    if (value === undefined) {
+                        this.removeAttribute(key.slice(1));
+                    } else {
+                        this.setAttribute(key.slice(1), value);
+                    }
+                } else {
+                    this[key] = value;
+                }
+            });
+        },
+
+        get: function (key) {
+            if (key[0] == '@') {
+                return this[0].getAttribute(key.slice(1));
+            }
+
+            return this[0][key]; 
         }
     };
 

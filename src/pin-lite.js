@@ -3,11 +3,11 @@
 /* jshint laxbreak: true */
 
 (function(context, factory) {
-    "use strict";
+    'use strict';
 
-    if (typeof module !== "undefined" && module.exports) {
+    if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
-    } else if (typeof define === "function" && define.amd) {
+    } else if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -17,9 +17,24 @@
         }
     }
 })(this, function() {
-    "use strict";
+    'use strict';
 
-    var $, pin = {};
+    var $,
+        pin = {}, 
+        div    = document.createElement('div'),
+        table  = document.createElement('table'), 
+        tbody  = document.createElement('tbody'),
+        tr     = document.createElement('tr'),
+        containers = {
+            '*':     div,
+            'tr':    tbody,
+            'tbody': table, 
+            'thead': table, 
+            'tfoot': table,
+            'td':    tr, 
+            'th':    tr
+        },
+        tagRe = /^\s*<(\w+|!)[^>]*>/;
 
     pin.init = function(selector, context) {
         var elmts;
@@ -28,22 +43,26 @@
             return new pin.Collection();
         }
 
-        else if (pin.isCollection(selector)) {
+        else if (selector._pin) {
             return selector;
         }
 
         else if (selector instanceof Function) {
-            return document.addEventListener("DOMContentLoaded", selector);
+            return document.addEventListener('DOMContentLoaded', selector);
         }
 
         else if (selector instanceof Array) {
             elmts = selector;
         }
 
-        else if (typeof selector === 'string') {
+        else if (typeof selector == 'string') {
             selector = selector.trim();
 
-            if (context) {
+            if (selector[0] == '<') {
+                elmts = pin.fragment(selector);
+            }
+
+            else if (context) {
                 return $(context).find(selector);
             } 
 
@@ -56,21 +75,16 @@
             elmts = selector;
         }
 
-        else if (typeof selector === 'object') {
+        else if (typeof selector == 'object') {
             elmts = [ selector ];
         }
 
         return new pin.Collection(elmts);
     };
 
-    pin.isCollection = function(object) {
-        return (object.__pin);
-    };
-
     pin.Collection = function(elmts) {
-        elmts = elmts || [];
-        elmts = [].slice.call(elmts);
-        elmts.__pin = true;
+        elmts = [].slice.call(elmts || []);
+        elmts._pin = true;
 
         for (var k in $.fn) {
             if ($.fn.hasOwnProperty(k)) {
@@ -81,14 +95,36 @@
         return elmts;
     };
 
+    pin.fragment = function (html) {
+        var container,
+            children,
+            elmts,
+            name = html.match(tagRe)[1];
+
+        if (!containers[name]) {
+            name = '*';
+        }
+
+        container = containers[name];
+        container.innerHTML = html;
+
+       // children = [].slice.call(container.childNodes);
+
+        elmts = $(children).each(function() {
+            container.removeChild(this);
+        });
+
+        return elmts;
+    };
+
     $ = function(selector, context) {
         return pin.init(selector, context);
     };
-    
+
     $.each = function (elmts, callback) {
         var i, k;
 
-        if (typeof elmts.length === 'number') {
+        if (typeof elmts.length == 'number') {
             for (i = 0; i < elmts.length; i++) {
                 if (callback.call(elmts[i], i, elmts[i]) === false) {
                     return elmts;
@@ -109,30 +145,16 @@
     };
 
     $.map = function (elmts, callback) {
-        var values = [], 
-            value, 
-            i, k;
+        var values = [],
+            value;
 
-        if (typeof elmts.length === 'number') {
-            for (i = 0; i < elmts.length; i++) {
-                value = callback.call(elmts[i], elmts[i], i);
+        $(elmts).each(function (i) {
+            value = callback.call(this, this, i);
 
-                if (value !== null) {
-                    values.push(value);
-                }
+            if (value !== null) {
+                values.push(value);
             }
-
-        } else {
-            for (k in elmts) {
-                if (elmts.hasOwnProperty(k)) {
-                    value = callback.call(elmts[k], elmts[k], k);
-                    
-                    if (value !== null) {
-                        values.push(value);
-                    }
-                }
-            }
-        }
+        });
 
         return values;
     };
@@ -143,11 +165,7 @@
         },
 
         map: function (callback) {
-            var elmts = $.map(this, function(elmt, i) { 
-                return callback.call(elmt, i, elmt); 
-            });
-
-            return $(elmts);
+            return $($.map(this, callback));
         },
 
         find: function (selector) {
@@ -156,7 +174,7 @@
             if (!selector) {
                 elmts = [];
 
-            } else if (this.length === 1) {
+            } else if (this.length == 1) {
                 elmts = this[0].querySelectorAll(selector);
 
             } else {
