@@ -70,6 +70,22 @@ Copyright (c) 2014 Jay Salvat
         assert.ok($$.is('ul#one'));
         assert.ok($$.is('ul#two'));
         assert.ok(!$$.is('div'));
+
+        $$ = $('#one li').parents(true);
+        assert.equal($$.length, 1);
+        assert.ok($$.is('ul'));
+        assert.ok(!$$.is('div'));
+
+        $$ = $('#one li, #two li').parents(true);
+        assert.equal($$.length, 2);
+        assert.ok($$.is('ul#one'));
+        assert.ok($$.is('ul#two'));
+        assert.ok(!$$.is('div'));
+
+        $$ = $('#one li, #two li').parents('div', true);
+        assert.equal($$.length, 1);
+        assert.ok(!$$.is('ul#one'));
+        assert.ok($$.is('div'));
     });
 
     QUnit.test('Fragment', function (assert) {

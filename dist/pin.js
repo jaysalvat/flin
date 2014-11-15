@@ -1,5 +1,5 @@
 /*! Pin - Copyright (c) 2014 Jay Salvat
- *  v0.0.2 released 2014-11-14 11:21
+ *  v0.0.2 released 2014-11-15 03:02
  *  http://pin.jaysalvat.com
  */
 
@@ -277,18 +277,39 @@
             return $(elmts);
         },
 
-        parents: function (selector){
+        parent: function (selector) {
+            return $(this).parents(selector, true);
+        },
+
+        closest: function (selector) {
+            return uniq(this.map(function () {
+                if ($(this).is(selector)) {
+                    return this;
+                }
+
+                return $(this).parent(selector)[0];    
+            }));
+        },
+
+        parents: function (selector, firstOnly){
             var elmts   = this,
                 parents = [];
 
-            function findParents(elmts) {
+            if (typeof selector === 'boolean')  {
+                firstOnly = selector;
+                selector  = null;
+            }
+
+            function findParents (elmts) {
                 return $.map(elmts, function () {
                     var parent = this.parentNode;
 
                     if (parent && parent.nodeType !== 9 && parents.indexOf(parent) < 0) {
+                        
                         if (!selector || $(parent).is(selector)) {
                             parents.push(parent);
                         }
+
                         return parent;
                     }
 
@@ -298,6 +319,10 @@
 
             while (elmts.length > 0) {
                 elmts = findParents(elmts);
+
+                if (firstOnly && parents.length) {
+                    return $(parents);
+                }
             }
 
             return $(parents);
@@ -549,6 +574,12 @@
     function camelize (string) {
         return string.replace(/-+(.)?/g, function (x, chr) { 
             return chr ? chr.toUpperCase() : '';
+        });
+    }
+
+    function uniq (elmts) {
+        return [].filter.call(elmts, function (elmt, idx) { 
+            return elmts.indexOf(elmt) == idx ? true : null;
         });
     }
 

@@ -127,7 +127,13 @@
     $ = function(selector, context) {
         return pin.init(selector, context);
     };
-    
+
+    $.uniq = function (elmts) {
+        return [].filter.call(elmts, function (elmt, idx) { 
+            return elmts.indexOf(elmt) == idx;
+        });
+    };
+
     $.each = function (elmts, callback) {
         var i, k;
 
@@ -273,18 +279,39 @@
             return $(elmts);
         },
 
-        parents: function (selector){
+        parent: function (selector) {
+            return $(this).parents(selector, true);
+        },
+
+        closest: function (selector) {
+            return $.uniq(this.map(function () {
+                if ($(this).is(selector)) {
+                    return this;
+                }
+
+                return $(this).parent(selector)[0];    
+            }));
+        },
+
+        parents: function (selector, firstOnly){
             var elmts   = this,
                 parents = [];
 
-            function findParents(elmts) {
+            if (typeof selector === 'boolean')  {
+                firstOnly = selector;
+                selector  = null;
+            }
+
+            function findParents (elmts) {
                 return $.map(elmts, function () {
                     var parent = this.parentNode;
 
                     if (parent && parent.nodeType !== 9 && parents.indexOf(parent) < 0) {
+                        
                         if (!selector || $(parent).is(selector)) {
                             parents.push(parent);
                         }
+
                         return parent;
                     }
 
@@ -294,6 +321,10 @@
 
             while (elmts.length > 0) {
                 elmts = findParents(elmts);
+
+                if (firstOnly && parents.length) {
+                    return $(parents);
+                }
             }
 
             return $(parents);
