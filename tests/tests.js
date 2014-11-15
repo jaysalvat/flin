@@ -356,7 +356,6 @@ Copyright (c) 2014 Jay Salvat
             });
 
             $$.on('baz', function (e, a, b) {
-                console.log(a, b);
                 baz = a + b;
             });
         }

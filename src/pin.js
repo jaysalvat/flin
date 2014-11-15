@@ -2,7 +2,7 @@
 /* globals define: true, module: true */
 /* jshint laxbreak: true */
 
-(function(context, factory) {
+(function (context, factory) {
     'use strict';
 
     if (typeof module != 'undefined' && module.exports) {
@@ -16,7 +16,7 @@
             context.$ = context.Pin;
         }
     }
-})(this, function() {
+})(this, function () {
     'use strict';
 
     var $,
@@ -41,7 +41,7 @@
         cssPrefix = getCssPrefix();
     /* end-extended-code */
 
-    pin.init = function(selector, context) {
+    pin.init = function (selector, context) {
         var elmts;
 
         if (!selector) {
@@ -87,7 +87,7 @@
         return new pin.Collection(elmts);
     };
 
-    pin.Collection = function(elmts) {
+    pin.Collection = function (elmts) {
         elmts = [].slice.call(elmts || []);
         elmts._pin = true;
 
@@ -113,7 +113,7 @@
         container = containers[name];
         container.innerHTML = html;
 
-        elmts = $(container.childNodes).each(function() {
+        elmts = $(container.childNodes).each(function () {
             container.removeChild(this);
         });
 
@@ -380,7 +380,7 @@
             });
         },
 
-        remove: function() {
+        remove: function () {
             return this.each(function () {
                 if (this.parentNode) {
                     this.parentNode.removeChild(this);
