@@ -22,6 +22,7 @@
         rename    = require("gulp-rename"),
         replace   = require("gulp-replace"),
         gsync     = require("gulp-sync"),
+        stripCode = require('gulp-strip-code'),
         sync      = gsync(gulp).sync;
 
     var bumpVersion = yargs.argv.type || "patch";
@@ -173,7 +174,7 @@
     gulp.task("uglify", function () {
         settings.banner.vars.pkg = getPackageJson();
 
-        return gulp.src('./src/*.js')
+        return gulp.src('./dist/**/!(*.min.js)')
             .pipe(rename({ suffix: ".min" }))
             .pipe(sourcemap.init())
             .pipe(uglify({
@@ -190,6 +191,16 @@
     gulp.task("copy", function () {
         return gulp.src('./src/*.js')
             .pipe(gulp.dest('./dist/'));
+    });
+
+    gulp.task('copy-lite', function () {
+        return gulp.src('./src/*.js')
+            .pipe(rename({ suffix: ".lite" }))
+            .pipe(stripCode({
+                start_comment: "extended-code",
+                end_comment: "end-extended-code"
+            }))
+            .pipe(gulp.dest('./dist'));
     });
 
     gulp.task("header", function () {
@@ -235,6 +246,7 @@
         "lint",
         "qunit", 
         "clean", 
+        "copy-lite",
         "copy", 
         "uglify",
         "header"
@@ -249,6 +261,7 @@
         "bump",
         "license",
         "clean",
+        "copy-lite",
         "copy",
         "uglify",
         "header",
@@ -293,6 +306,7 @@ npm install --save-dev gulp-zip
 npm install --save-dev gulp-rename
 npm install --save-dev gulp-replace
 npm install --save-dev gulp-sync
+npm install --save-dev gulp-strip-code
 
 Gh-pages creation
 -----------------

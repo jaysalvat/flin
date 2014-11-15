@@ -35,9 +35,11 @@
             'th':    tr
         },
         tagRe = /^\s*<(\w+|!)[^>]*>/;
-
+    
+    /* extended-code */
     var cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
+    /* end-extended-code */
 
     pin.init = function(selector, context) {
         var elmts;
@@ -111,21 +113,15 @@
         container = containers[name];
         container.innerHTML = html;
 
-        elmts = $(children).each(function() {
+        elmts = $(container.childNodes).each(function() {
             container.removeChild(this);
         });
 
         return elmts;
     };
 
-    $ = function(selector, context) {
+    $ = function (selector, context) {
         return pin.init(selector, context);
-    };
-
-    $.uniq = function (elmts) {
-        return [].filter.call(elmts, function (elmt, idx) { 
-            return elmts.indexOf(elmt) == idx;
-        });
     };
 
     $.each = function (elmts, callback) {
@@ -165,8 +161,15 @@
 
         return values;
     };
+    
+    /* extended-code */
+    $.uniq = function (elmts) {
+        return [].filter.call(elmts, function (elmt, idx) { 
+            return elmts.indexOf(elmt) == idx;
+        });
+    };
 
-    $.extend = function(deep) {
+    $.extend = function (deep) {
         var obj  = {},
             args = [].slice.call(arguments),
             i, k;
@@ -189,6 +192,7 @@
 
         return obj;
     };
+    /* end-extended-code */
 
     $.fn = {
         each: function (callback) {
@@ -197,10 +201,6 @@
 
         map: function (callback) {
             return $($.map(this, callback));
-        },
-
-        slice: function () {
-            return $([].slice.apply(this, arguments));
         },
 
         find: function (selector) {
@@ -219,6 +219,11 @@
             }
             
             return $(elmts);
+        },
+
+        /* extended-code */
+        slice: function () {
+            return $([].slice.apply(this, arguments));
         },
 
         parent: function (selector) {
@@ -515,8 +520,10 @@
 
             return this[0][key]; 
         }
+        /* end-extended-code */
     };
 
+    /* extended-code */
     function getEventInfo (name) {
         var splits = name.split('.');
 
@@ -567,6 +574,7 @@
             return chr ? chr.toUpperCase() : '';
         });
     }
+    /* end-extended-code */
 
     return $;
 });

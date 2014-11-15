@@ -11,7 +11,7 @@ Unit tests are green on IE9+, Chrome 30+, Firefox 30+, Opera 20+, Safari 5+
 that should makes it a great choice for most modern apps, mobile or not.
 
 The minified library weighs ~5.5kb, ~2kb GZIPed.
-An even lighter alternative (~1.5kb, ~650 bytes GZIPed) is available with only
+An even lighter alternative (~1.5kb, ~700 bytes GZIPed) is available with only
 selectors and plugin architecture to let you build your own perfect library.
 
 **Important Note:** Even if the Pin API is near jQuery API, its goals is ABSOLUTELY NOT
