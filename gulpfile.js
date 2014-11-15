@@ -201,7 +201,7 @@
     });
 
     gulp.task("gh-pages", function (cb) {
-        version = getPackageJson().version;
+        var version = getPackageJson().version;
 
         exec([  'git checkout gh-pages',
                 'rm -rf releases/' + version,
