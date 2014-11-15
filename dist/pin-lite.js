@@ -1,5 +1,5 @@
 /*! Pin - Copyright (c) 2014 Jay Salvat
- *  v0.0.2 released 2014-11-15 03:02
+ *  v0.0.3 released 2014-11-15 11:25
  *  http://pin.jaysalvat.com
  */
 
