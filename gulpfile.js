@@ -30,15 +30,12 @@
     var settings = {
         banner: {
             content: [
-                '/*! Pin - Copyright (c) <%= year %> Jay Salvat',
-                ' *  v<%= pkg.version %> released <%= datetime %>',
-                ' *  http://pin.jaysalvat.com',
-                ' */',
+                '/*! Pin v<%= pkg.version %> (c) <%= year %> Jay Salvat | http://pin.jaysalvat.com */',
                 '',
             ].join("\n"),
             vars: {
                 pkg: pkg,
-                datetime: gutil.date("yyyy-mm-dd HH:MM"),
+                datetime: gutil.date("yyyy-mm-dd"),
                 year: gutil.date("yyyy")
             }
         }

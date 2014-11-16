@@ -179,7 +179,9 @@
         }
 
         for (i = 0; i < args.length; i++) {
+
             for (k in args[i]) {
+
                 if (args[i].hasOwnProperty(k)) {
                     if (deep === true && typeof args[i][k] == 'object') {
                         obj[k] = $.extend(deep, obj[k], args[i][k]);
@@ -227,7 +229,7 @@
         },
 
         parent: function (selector) {
-            return $(this).parents(selector, true);
+            return this.parents(selector, true);
         },
 
         closest: function (selector) {
@@ -291,7 +293,7 @@
         },
 
         has: function (selector) {
-            return !!$(this).find(selector).length;
+            return !!this.find(selector).length;
         },
 
         is: function (selector) {
@@ -302,7 +304,7 @@
                 return false;
             }
 
-            elmts = $(this).map(function () {
+            elmts = this.map(function () {
                 matchesSelector = this.webkitMatchesSelector
                                || this.mozMatchesSelector
                                || this.msMatchesSelector
