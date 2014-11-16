@@ -1,6 +1,8 @@
 Pin. A tiny Javascript library.
 ===============================
 
+A taste of jQuery without the fat.
+
 [![Build Status](https://travis-ci.org/jaysalvat/pin.png?branch=master)](https://travis-ci.org/jaysalvat/pin)
 [![Bower version](https://badge.fury.io/bo/pin.svg)](http://badge.fury.io/bo/pin)
 
@@ -12,7 +14,7 @@ that should makes it a great choice for most modern apps, mobile or not.
 
 The minified library weighs ~5.5kb, ~2kb GZIPed.
 An even lighter alternative (~1.5kb, ~700 bytes GZIPed) is available with only
-selectors and plugin architecture to let you build your own perfect library.
+selector and plugin architecture as an empty shell to let you build your own perfect library.
 
 **Important Note:** Even if the Pin API is near jQuery API, its goals is ABSOLUTELY NOT
 to be compatible at all.
