@@ -331,38 +331,6 @@
             });
         },
 
-        append: function (html) {
-            var elmt = $(html)[0];
-
-            return this.each(function () {
-                this.appendChild(elmt);
-            });
-        },
-
-        prepend: function (html) {
-            var elmt = $(html)[0];
-
-            return this.each(function () {
-                this.insertBefore(elmt, this.firstChild);
-            });
-        },
-
-        before: function (html) {
-            var elmt = $(html)[0];
-
-            return this.each(function () {
-                this.parentNode.insertBefore(elmt, this);
-            });
-        },
-
-        after: function (html) {
-            var elmt = $(html)[0];
-
-            return this.each(function () {
-                this.parentNode.insertBefore(elmt, this.nextSibling);
-            });
-        },
-
         wrapWith: function (html) {
             var elmt = $(html)[0],
                 last = elmt;
@@ -526,6 +494,19 @@
     };
 
     /* extended-code */
+    [ 'prepend', 'append', 'before', 'after' ].forEach(function (name, i) {
+        $.fn[name] = function (html) {
+            var elmt = $(html)[0];
+
+            return this.each(function () {
+                return i === 0 ? this.insertBefore(elmt, this.firstChild) :
+                       i  == 1 ? this.appendChild(elmt) :
+                       i  == 2 ? this.parentNode.insertBefore(elmt, this) :
+                       i  == 3 ? this.parentNode.insertBefore(elmt, this.nextSibling) : 0;
+            });
+        };
+    });
+
     function getEventInfo (name) {
         var splits = name.split('.');
 
