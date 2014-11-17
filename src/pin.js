@@ -451,9 +451,9 @@
 
                 if (sign === '.') {
                     if (value === null) {
-                        this.addClass(unsignedKey);
-                    } else {
                         this.removeClass(unsignedKey);
+                    } else {
+                        this.addClass(unsignedKey);
                     }
                 }
 
