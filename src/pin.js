@@ -33,12 +33,9 @@
             'th':    tr,
             '*':     div
         },
-        tagRe = /^\s*<(\w+|!)[^>]*>/;
-
-    /* extended-code */
-    var cssStyles = getCssStyles(),
+        tagRe = /^\s*<(\w+|!)[^>]*>/,
+        cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
-    /* end-extended-code */
 
     pin.init = function (selector, context) {
         var elmts;
@@ -327,20 +324,6 @@
             });
         },
 
-        css: function (key, value) {
-            key = getCssProperty(key);
-
-            if (value !== undefined) {
-                key = camelize(key);
-
-                return this.each(function () {
-                    this.style[key] = value;
-                });
-            }
-
-            return this[0].style[key] || getComputedStyle(this[0]).getPropertyValue(key);
-        },
-
         on: function (name, handler, capture) {
             var evt = getEventInfo(name),
                 key = evt.name + '.' + evt.ns,
@@ -404,60 +387,76 @@
 
         set: function (key, value) {
             return this.each(function (i) {
-                var sign = key[0],
-                    unsignedKey = key.slice(1);
+                var values = key,
+                    that = this;
 
-                value = (typeof value === 'function') ? value.call(this, i) : value;
-
-                if (sign === '@') {
-                    if (value === undefined) {
-                        this.removeAttribute(unsignedKey);
-                    } else {
-                        this.setAttribute(unsignedKey, value);
-                    }
+                if (typeof key !== 'object') {
+                    values = {};
+                    values[key] = value;
                 }
 
-                if (sign === '.') {
-                    if (unsignedKey[0] === '|') {
-                        var unsignedUnsignedKey = unsignedKey.slice(1);
+                $.each(values, function (key, value) {
+                    var sign = key[0],
+                        shortKey = key.slice(1);
 
-                        if (getClassRe(unsignedUnsignedKey).test(this.className)) {
-                            $(this).set('.' + unsignedUnsignedKey, null);
+                    if (typeof value === 'function') {
+                        value = value.call(that, i);
+                    }
+
+                    if (sign === '@') {
+                        if (value === undefined) {
+                            that.removeAttribute(shortKey);
                         } else {
-                            $(this).set('.' + unsignedUnsignedKey);
-                        }
-                    } else if (value === null) {
-                        this.className = this.className.replace(getClassRe(unsignedKey), '');
-                    } else {
-                        if (!getClassRe(unsignedKey).test(this.className)) {
-                            this.className = this.className + ' ' + unsignedKey;
+                            that.setAttribute(shortKey, value);
                         }
                     }
-                }
 
-                if (sign === '+') {
-                    $(this).css(unsignedKey, value);
-                } else {
-                    this[key] = value;
-                }
+                    if (sign === '.') {
+                        if (shortKey[0] === '|') {
+                            var shortShortKey = shortKey.slice(1);
+
+                            if (getClassRe(shortShortKey).test(that.className)) {
+                                that.className = that.className.replace(getClassRe(shortShortKey), '');
+                            } else {
+                                that.className = that.className + ' ' + shortShortKey;
+                            }
+                        } else if (value === null) {
+                            that.className = that.className.replace(getClassRe(shortKey), '');
+                        } else {
+                            if (!getClassRe(shortKey).test(that.className)) {
+                                that.className = that.className + ' ' + shortKey;
+                            }
+                        }
+                    }
+
+                    if (sign === '+') {
+                        shortKey = camelize(getCssProperty(shortKey));
+
+                        that.style[shortKey] = value;
+                    } else {
+                        that[key] = value;
+                    }
+                });
             });
         },
 
         get: function (key) {
             var that = this[0],
                 sign = key[0],
-                unsignedKey = key.slice(1);
+                shortKey = key.slice(1);
 
             if (sign === '@') {
-                return that.getAttribute(unsignedKey);
+                return that.getAttribute(shortKey);
             }
 
             if (sign === '.') {
-                return getClassRe(unsignedKey).test(that.className);
+                return getClassRe(shortKey).test(that.className);
             }
 
             if (sign === '+') {
-                return $(that).css(unsignedKey);
+                shortKey = camelize(getCssProperty(shortKey));
+
+                return that.style[shortKey] || getComputedStyle(that).getPropertyValue(shortKey);
             }
 
             return that[key]; 
@@ -496,6 +495,7 @@
             ns:   splits[1] || '*'
         };
     }
+    /* end-extended-code */
 
     function getClassRe (className) {
         return new RegExp('(^|\\s+)' + className + '(\\s+|$)');
@@ -512,7 +512,7 @@
     function getCssPrefix () {
         var prefix = (cssStyles.join('').match(/-(moz|webkit|ms)-/) || (cssStyles.OLink === '' && ['', 'o']))[1];
 
-        return prefix === 'ms' ? prefix : firstCap(prefix);
+        return prefix === 'ms' ? prefix : prefix[0].toUpperCase() + prefix.slice(1) ;
     }
 
     function getCssProperty (property) {
@@ -529,16 +529,11 @@
         return property;
     }
 
-    function firstCap (string) {
-        return string[0].toUpperCase() + string.substr(1);
-    }
-
     function camelize (string) {
         return string.replace(/-+(.)?/g, function (x, chr) { 
             return chr ? chr.toUpperCase() : '';
         });
     }
-    /* end-extended-code */
 
     return $;
 });

@@ -220,16 +220,6 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($filtered.eq(2)[0].textContent, 'item 1-5');
     });
 
-    QUnit.test('Css', function (assert) {
-        var $$;
-
-        $$ = $("#one");
-        assert.equal($$.css('z-index'), 'auto');
-
-        $$.css('z-index', 1);
-        assert.equal($$.css('z-index'), '1');
-    });
-
     QUnit.test('DOM remove', function (assert) {
         var $$;
 
