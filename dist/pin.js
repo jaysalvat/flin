@@ -1,3 +1,4 @@
+/*! Pin v0.0.4 (c) 2014 Jay Salvat | http://pin.jaysalvat.com */
 
 (function (context, factory) {
     'use strict';
@@ -326,6 +327,36 @@
                 }
             });
         },
+
+        // addClass: function (key) {
+        //     return this.each(function () {
+        //         if (!$(this).hasClass(key)) {
+        //             this.className = this.className + ' ' + key;
+        //         }
+        //     });
+        // },
+
+        // removeClass: function (key) {
+        //     return this.each(function () {
+        //         this.className = this.className.replace(getClassRe(key), '');
+        //     });
+        // },
+
+        // hasClass: function (key) {
+        //     return getClassRe(key).test(this[0].className);
+        // },
+
+        // toggleClass: function (key) {
+        //     return this.each(function () {
+        //         var $elmt = $(this);
+
+        //         if ($elmt.hasClass(key)) {
+        //             $elmt.removeClass(key);
+        //         } else { 
+        //             $elmt.addClass(key);
+        //         }
+        //     });
+        // },
 
         css: function (key, value) {
             key = getCssProperty(key);

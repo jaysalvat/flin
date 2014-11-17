@@ -220,25 +220,6 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($filtered.eq(2)[0].textContent, 'item 1-5');
     });
 
-    QUnit.test('Class', function (assert) {
-        var $$;
-
-        $$ = $("#one");
-        assert.ok(!$$.hasClass('test'));
-
-        $$.addClass('test');
-        assert.ok($$.hasClass('test'));
-
-        $$.removeClass('test');
-        assert.ok(!$$.hasClass('test'));
-
-        $$.toggleClass('test');
-        assert.ok($$.hasClass('test'));
-
-        $$.toggleClass('test');
-        assert.ok(!$$.hasClass('test'));
-    });
-
     QUnit.test('Css', function (assert) {
         var $$;
 
