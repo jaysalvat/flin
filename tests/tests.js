@@ -479,6 +479,25 @@ Copyright (c) 2014 Jay Salvat
 
         $$.set('@id');
         assert.equal($$.get('@id'), undefined);
+
+        $$.set('.foo');
+        assert.equal($$.get('.foo'), true);
+
+        $$.set('.foo', null);
+        assert.equal($$.get('.foo'), false);
+
+        $$.set('.|bar');
+        assert.equal($$.get('.bar'), true);
+
+        $$.set('.|bar');
+        assert.equal($$.get('.bar'), false);
+
+        $$.set('.|bar');
+        assert.equal($$.get('.bar'), true);
+
+        $$.set('+width', '999px');
+        assert.equal($$.get('+width'), '999px');
+
     });
 
 })(Pin);

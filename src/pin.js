@@ -448,15 +448,17 @@
                 }
 
                 if (sign === '.') {
-                    if (value === null) {
-                        this.removeClass(unsignedKey);
+                    if (unsignedKey[0] === '|') {
+                        $(this).toggleClass(unsignedKey.slice(1));
+                    } else if (value === null) {
+                        $(this).removeClass(unsignedKey);
                     } else {
-                        this.addClass(unsignedKey);
+                        $(this).addClass(unsignedKey);
                     }
                 }
 
-                if (sign === '=') {
-                    this.css(unsignedKey, value);
+                if (sign === '+') {
+                    $(this).css(unsignedKey, value);
                 }
 
                 this[key] = value;
@@ -473,11 +475,11 @@
             }
 
             if (sign === '.') {
-                return that.hasClass(unsignedKey);
+                return $(that).hasClass(unsignedKey);
             }
 
-            if (sign === '=') {
-                return that.css(unsignedKey);
+            if (sign === '+') {
+                return $(that).css(unsignedKey);
             }
 
             return that[key]; 
