@@ -1,3 +1,4 @@
+/*! Pin v0.0.4 (c) 2014 Jay Salvat | http://pin.jaysalvat.com */
 
 (function (context, factory) {
     'use strict';
@@ -442,10 +443,10 @@
                 value = (typeof value === 'function') ? value.call(this, i) : value;
 
                 if (sign === '@') {
+                    this.setAttribute(unsignedKey, value);
+                    
                     if (value === undefined) {
                         this.removeAttribute(unsignedKey);
-                    } else {
-                        this.setAttribute(unsignedKey, value);
                     }
                 }
 
