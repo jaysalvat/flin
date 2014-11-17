@@ -82,11 +82,9 @@
         elmts = [].slice.call(elmts || []);
         elmts._pin = true;
 
-        for (var k in $.fn) {
-            if ($.fn.hasOwnProperty(k)) {
-                elmts[k] = $.fn[k];
-            }
-        }
+        $.each($.fn, function (i) {
+            elmts[i] = $.fn[i];
+        });
         
         return elmts;
     };
