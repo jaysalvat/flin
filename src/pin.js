@@ -1,13 +1,11 @@
 
-/* globals define: true, module: true */
-/* jshint laxbreak: true */
-
 (function (context, factory) {
     'use strict';
+    /* globals define: true, module: true */
 
-    if (typeof module != 'undefined' && module.exports) {
+    if (typeof module !== 'undefined' && module.exports) {
         module.exports = factory();
-    } else if (typeof define == 'function' && define.amd) {
+    } else if (typeof define === 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -18,24 +16,25 @@
     }
 })(this, function () {
     'use strict';
+    /* jshint laxbreak: true */ 
 
     var $,
-        pin = {}, 
-        div    = document.createElement('div'),
-        table  = document.createElement('table'), 
-        tbody  = document.createElement('tbody'),
-        tr     = document.createElement('tr'),
+        pin   = {}, 
+        div   = document.createElement('div'),
+        table = document.createElement('table'), 
+        tbody = document.createElement('tbody'),
+        tr    = document.createElement('tr'),
         containers = {
-            '*':     div,
-            'tr':    tbody,
-            'tbody': table, 
             'thead': table, 
+            'tbody': table, 
             'tfoot': table,
+            'tr':    tbody,
             'td':    tr, 
-            'th':    tr
+            'th':    tr,
+            '*':     div
         },
         tagRe = /^\s*<(\w+|!)[^>]*>/;
-    
+
     /* extended-code */
     var cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
@@ -60,10 +59,10 @@
             elmts = selector;
         }
 
-        else if (typeof selector == 'string') {
+        else if (typeof selector === 'string') {
             selector = selector.trim();
 
-            if (selector[0] == '<') {
+            if (selector[0] === '<') {
                 elmts = pin.fragment(selector);
             }
 
@@ -80,7 +79,7 @@
             elmts = selector;
         }
 
-        else if (typeof selector == 'object') {
+        else if (typeof selector === 'object') {
             elmts = [ selector ];
         }
 
@@ -102,7 +101,6 @@
 
     pin.fragment = function (html) {
         var container,
-            children,
             elmts,
             name = html.match(tagRe)[1];
 
@@ -127,7 +125,7 @@
     $.each = function (elmts, callback) {
         var i, k;
 
-        if (typeof elmts.length == 'number') {
+        if (typeof elmts.length === 'number') {
             for (i = 0; i < elmts.length; i++) {
                 if (callback.call(elmts[i], i, elmts[i]) === false) {
                     return elmts;
@@ -165,7 +163,7 @@
     /* extended-code */
     $.uniq = function (elmts) {
         return [].filter.call(elmts, function (elmt, idx) { 
-            return elmts.indexOf(elmt) == idx;
+            return elmts.indexOf(elmt) === idx;
         });
     };
 
@@ -174,7 +172,7 @@
             args = [].slice.call(arguments),
             i, k;
 
-        if (typeof deep == 'boolean') {
+        if (typeof deep === 'boolean') {
             args.shift();
         }
 
@@ -183,7 +181,7 @@
             for (k in args[i]) {
 
                 if (args[i].hasOwnProperty(k)) {
-                    if (deep === true && typeof args[i][k] == 'object') {
+                    if (deep === true && typeof args[i][k] === 'object') {
                         obj[k] = $.extend(deep, obj[k], args[i][k]);
                     } else {
                         obj[k] = args[i][k];
@@ -211,7 +209,7 @@
             if (!selector) {
                 elmts = [];
 
-            } else if (this.length == 1) {
+            } else if (this.length === 1) {
                 elmts = this[0].querySelectorAll(selector);
 
             } else {
@@ -247,7 +245,7 @@
                 parents = [],
                 parent;
 
-            if (typeof selector == 'boolean')  {
+            if (typeof selector === 'boolean')  {
                 firstOnly = selector;
                 selector  = null;
             }
@@ -256,7 +254,7 @@
                 return $.map(elmts, function () {
                     parent = this.parentNode;
 
-                    if (parent && parent.nodeType != 9 && parents.indexOf(parent) < 0) {
+                    if (parent && parent.nodeType !== 9 && parents.indexOf(parent) < 0) {
                         
                         if (!selector || $(parent).is(selector)) {
                             parents.push(parent);
@@ -297,28 +295,17 @@
         },
 
         is: function (selector) {
-            var elmts,
-                matchesSelector;
-
-            if (!selector) {
-                return false;
-            }
-
-            elmts = this.map(function () {
-                matchesSelector = this.webkitMatchesSelector
-                               || this.mozMatchesSelector
-                               || this.msMatchesSelector
-                               || this.oMatchesSelector
-                               || this.matchesSelector;
-
-                if (this == selector || matchesSelector.call(this, selector)) {
-                    return this;
+            return !!(this.map(function () {
+                if (this !== selector && !(
+                    this.webkitMatchesSelector
+                    || this.mozMatchesSelector
+                    || this.msMatchesSelector
+                    || this.oMatchesSelector
+                    || this.matchesSelector
+                ).call(this, selector)) {
+                    return null;
                 }
-
-                return null;
-            });
-
-            return !!elmts.length;
+            })).length;
         },
 
         replaceWith: function (html) {
@@ -366,7 +353,7 @@
 
         removeClass: function (key) {
             return this.each(function () {
-                this.className = this.className.replace(getClassRe(key), ' ');
+                this.className = this.className.replace(getClassRe(key), '');
             });
         },
 
@@ -401,8 +388,8 @@
         },
 
         on: function (name, handler, capture) {
-            var e   = getEventInfo(name),
-                key = e.name + '.' + e.ns,
+            var evt = getEventInfo(name),
+                key = evt.name + '.' + evt.ns,
                 handlerList,
                 handlerProxy,
                 args;
@@ -415,25 +402,21 @@
                     handler.apply(this, args);
                 };
 
-                handlerList      = this._handlers  || {};
+                handlerList = this._handlers || {};
                 handlerList[key] = handlerList[key] || [];
                 handlerList[key].push(handlerProxy);
                 
                 this._handlers = handlerList;
-                this.addEventListener(e.name, handlerProxy, capture);
+                this.addEventListener(evt.name, handlerProxy, capture);
             });
         },
 
         off: function (name, capture) {
-            var e = getEventInfo(name);
+            var evt = getEventInfo(name);
 
             return this.each(function () {
                 var k, i, x,
                     handlers;
-
-                if (!this._handlers) {
-                    return;
-                }
 
                 handlers = this._handlers;
 
@@ -441,11 +424,7 @@
                     if (handlers.hasOwnProperty(k)) {
                         i = getEventInfo(k);
 
-                        if ((e.name == '*'    
-                                && (e.ns == '*'  || e.ns == i.ns)) 
-                         || (e.name == i.name 
-                                && (e.ns == i.ns || e.ns == '*'))
-                         ) {
+                        if ((evt.name === '*' || evt.name === i.name ) && (evt.ns === '*' || evt.ns === i.ns)) {
 
                             for (x = 0; x < handlers[k].length; x++) {
                                 this.removeEventListener(i.name, handlers[k][x], capture);
@@ -471,24 +450,39 @@
 
         set: function (key, value) {
             return this.each(function () {
-                if (key[0] == '@') {
+                var sign = key[0],
+                    unsignedKey = key.slice(1);
+
+                if (sign === '@') {
                     if (value === undefined) {
-                        this.removeAttribute(key.slice(1));
+                        this.removeAttribute(unsignedKey);
                     } else {
-                        this.setAttribute(key.slice(1), value);
+                        this.setAttribute(unsignedKey, value);
                     }
-                } else {
-                    this[key] = value;
                 }
+
+                if (sign === '.') {
+                    this.css(unsignedKey, value);
+                }
+                
+                this[key] = value;
             });
         },
 
         get: function (key) {
-            if (key[0] == '@') {
-                return this[0].getAttribute(key.slice(1));
+            var that = this[0],
+                sign = key[0],
+                unsignedKey = key.slice(1);
+
+            if (sign === '@') {
+                return that.getAttribute(unsignedKey);
             }
 
-            return this[0][key]; 
+            if (sign === '.') {
+                return that.css(unsignedKey);
+            }
+
+            return that[key]; 
         }
         /* end-extended-code */
     };
@@ -499,10 +493,19 @@
             var elmt = $(html)[0];
 
             return this.each(function () {
-                return i === 0 ? this.insertBefore(elmt, this.firstChild) :
-                       i  == 1 ? this.appendChild(elmt) :
-                       i  == 2 ? this.parentNode.insertBefore(elmt, this) :
-                       i  == 3 ? this.parentNode.insertBefore(elmt, this.nextSibling) : 0;
+                if (i === 0) {
+                    return this.insertBefore(elmt, this.firstChild);   
+                }
+
+                if (i === 1) {
+                    return this.appendChild(elmt);
+                }
+
+                if (i === 2) {
+                    return this.parentNode.insertBefore(elmt, this);
+                }
+
+                return this.parentNode.insertBefore(elmt, this.nextSibling);
             });
         };
     });
@@ -541,7 +544,7 @@
              prefixed = '-' + cssPrefix + '-' + property;
         }
 
-        if (cssStyles.indexOf(prefixed.toLowerCase()) != -1) {
+        if (cssStyles.indexOf(prefixed.toLowerCase()) !== -1) {
             return prefixed;
         }
 
