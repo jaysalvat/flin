@@ -46,39 +46,31 @@
         if (!selector) {
             return new pin.Collection();
         }
-
         else if (selector._pin) {
             return selector;
         }
-
         else if (selector instanceof Function) {
             return document.addEventListener('DOMContentLoaded', selector);
         }
-
         else if (selector instanceof Array) {
             elmts = selector;
         }
-
         else if (typeof selector === 'string') {
             selector = selector.trim();
 
             if (selector[0] === '<') {
                 elmts = pin.fragment(selector);
             }
-
             else if (context) {
                 return $(context).find(selector);
             } 
-
             else {
                 elmts = document.querySelectorAll(selector);
             }
         }
-
         else if (selector instanceof NodeList) {
             elmts = selector;
         }
-
         else if (typeof selector === 'object') {
             elmts = [ selector ];
         }
@@ -131,7 +123,6 @@
                     return elmts;
                 }
             }
-
         } else {
             for (k in elmts) {
                 if (elmts.hasOwnProperty(k)) {
@@ -177,9 +168,7 @@
         }
 
         for (i = 0; i < args.length; i++) {
-
             for (k in args[i]) {
-
                 if (args[i].hasOwnProperty(k)) {
                     if (deep === true && typeof args[i][k] === 'object') {
                         obj[k] = $.extend(deep, obj[k], args[i][k]);
@@ -208,10 +197,8 @@
 
             if (!selector) {
                 elmts = [];
-
             } else if (this.length === 1) {
                 elmts = this[0].querySelectorAll(selector);
-
             } else {
                 elmts = this.map(function () { 
                     return this.querySelectorAll(selector);
@@ -255,7 +242,6 @@
                     parent = this.parentNode;
 
                     if (parent && parent.nodeType !== 9 && parents.indexOf(parent) < 0) {
-                        
                         if (!selector || $(parent).is(selector)) {
                             parents.push(parent);
                         }
@@ -462,9 +448,17 @@
                 }
 
                 if (sign === '.') {
+                    if (value === null) {
+                        this.addClass(unsignedKey);
+                    } else {
+                        this.removeClass(unsignedKey);
+                    }
+                }
+
+                if (sign === '=') {
                     this.css(unsignedKey, value);
                 }
-                
+
                 this[key] = value;
             });
         },
@@ -479,9 +473,13 @@
             }
 
             if (sign === '.') {
-                return that.css(unsignedKey);
+                return that.hasClass(unsignedKey);
             }
 
+            if (sign === '=') {
+                return that.css(unsignedKey);
+            }
+            
             return that[key]; 
         }
         /* end-extended-code */
