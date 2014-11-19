@@ -492,7 +492,7 @@
     }
 
     function getClassRe (className) {
-        return new RegExp('(^|\\s+)' + className + '(\\s+|$)');
+        return new RegExp('\\b' + className + '\\b');
     }
 
     function hasClass(elmt, className) {
