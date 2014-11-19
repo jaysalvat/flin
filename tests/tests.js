@@ -454,16 +454,16 @@ Copyright (c) 2014 Jay Salvat
         $$.set('.foo');
         assert.equal($$.get('.foo'), true);
 
-        $$.set('.foo', null);
+        $$.set('.foo', 'remove');
         assert.equal($$.get('.foo'), false);
 
-        $$.set('.|bar');
+        $$.set('.bar', 'toggle');
         assert.equal($$.get('.bar'), true);
 
-        $$.set('.|bar');
+        $$.set('.bar', 'toggle');
         assert.equal($$.get('.bar'), false);
 
-        $$.set('.|bar');
+        $$.set('.bar', 'toggle');
         assert.equal($$.get('.bar'), true);
 
         $$.set('+width', '999px');

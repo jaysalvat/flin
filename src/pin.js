@@ -33,9 +33,12 @@
             'th':    tr,
             '*':     div
         },
-        tagRe = /^\s*<(\w+|!)[^>]*>/,
-        cssStyles = getCssStyles(),
+        tagRe = /^\s*<(\w+|!)[^>]*>/;
+
+    /* extended-code */
+    var cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
+    /* end-extended-code */
 
     pin.init = function (selector, context) {
         var elmts;
@@ -179,30 +182,6 @@
     /* end-extended-code */
 
     $.fn = {
-        each: function (callback) {
-            return $.each(this, callback);
-        },
-
-        map: function (callback) {
-            return $($.map(this, callback));
-        },
-
-        find: function (selector) {
-            var elmts;
-
-            if (!selector) {
-                elmts = [];
-            } else if (this.length === 1) {
-                elmts = this[0].querySelectorAll(selector);
-            } else {
-                elmts = this.map(function () { 
-                    return this.querySelectorAll(selector);
-                });
-            }
-            
-            return $(elmts);
-        },
-
         /* extended-code */
         slice: function () {
             return $([].slice.apply(this, arguments));
@@ -388,7 +367,7 @@
         set: function (key, value) {
             return this.each(function (i) {
                 var values = key,
-                    that = this;
+                    elmt = this;
 
                 if (typeof key !== 'object') {
                     values = {};
@@ -400,68 +379,84 @@
                         shortKey = key.slice(1);
 
                     if (typeof value === 'function') {
-                        value = value.call(that, i);
+                        value = value.call(elmt, i);
                     }
 
                     if (sign === '@') {
                         if (value === undefined) {
-                            that.removeAttribute(shortKey);
+                            elmt.removeAttribute(shortKey);
                         } else {
-                            that.setAttribute(shortKey, value);
+                            elmt.setAttribute(shortKey, value);
                         }
                     }
 
                     if (sign === '.') {
-                        if (shortKey[0] === '|') {
-                            var shortShortKey = shortKey.slice(1);
-
-                            if (getClassRe(shortShortKey).test(that.className)) {
-                                that.className = that.className.replace(getClassRe(shortShortKey), '');
-                            } else {
-                                that.className = that.className + ' ' + shortShortKey;
-                            }
-                        } else if (value === null) {
-                            that.className = that.className.replace(getClassRe(shortKey), '');
+                        if (value === 'toggle') {
+                            toggleClass(elmt, shortKey);
+                        } else if (value === 'remove') {
+                            removeClass(elmt, shortKey);
                         } else {
-                            if (!getClassRe(shortKey).test(that.className)) {
-                                that.className = that.className + ' ' + shortKey;
-                            }
+                            addClass(elmt, shortKey);
                         }
                     }
 
                     if (sign === '+') {
                         shortKey = camelize(getCssProperty(shortKey));
-
-                        that.style[shortKey] = value;
+                        
+                        elmt.style[shortKey] = value;
                     } else {
-                        that[key] = value;
+                        elmt[key] = value;
                     }
                 });
             });
         },
 
         get: function (key) {
-            var that = this[0],
+            var elmt = this[0],
                 sign = key[0],
                 shortKey = key.slice(1);
 
             if (sign === '@') {
-                return that.getAttribute(shortKey);
+                return elmt.getAttribute(shortKey);
             }
 
             if (sign === '.') {
-                return getClassRe(shortKey).test(that.className);
+                return hasClass(elmt, shortKey);
             }
 
             if (sign === '+') {
                 shortKey = camelize(getCssProperty(shortKey));
 
-                return that.style[shortKey] || getComputedStyle(that).getPropertyValue(shortKey);
+                return elmt.style[shortKey] || getComputedStyle(elmt).getPropertyValue(shortKey);
             }
 
-            return that[key]; 
-        }
+            return elmt[key]; 
+        },
         /* end-extended-code */
+
+        each: function (callback) {
+            return $.each(this, callback);
+        },
+
+        map: function (callback) {
+            return $($.map(this, callback));
+        },
+
+        find: function (selector) {
+            var elmts;
+
+            if (!selector) {
+                elmts = [];
+            } else if (this.length === 1) {
+                elmts = this[0].querySelectorAll(selector);
+            } else {
+                elmts = this.map(function () { 
+                    return this.querySelectorAll(selector);
+                });
+            }
+            
+            return $(elmts);
+        }
     };
 
     /* extended-code */
@@ -495,10 +490,31 @@
             ns:   splits[1] || '*'
         };
     }
-    /* end-extended-code */
 
     function getClassRe (className) {
         return new RegExp('(^|\\s+)' + className + '(\\s+|$)');
+    }
+
+    function hasClass(elmt, className) {
+        return getClassRe(className).test(elmt.className);
+    }
+
+    function addClass (elmt, className) {
+        if (!hasClass(elmt, className)) {
+            elmt.className = elmt.className + ' ' + className;
+        }
+    }
+
+    function removeClass (elmt, className) {
+         elmt.className = elmt.className.replace(getClassRe(className), '');
+    }
+
+    function toggleClass (elmt, className) {
+        if (hasClass(elmt, className)) {
+            removeClass(elmt, className);
+        } else {
+            addClass(elmt, className);
+        }
     }
 
     function getComputedStyle (elmt) {
@@ -534,6 +550,7 @@
             return chr ? chr.toUpperCase() : '';
         });
     }
+    /* end-extended-code */
 
     return $;
 });
