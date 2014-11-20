@@ -495,7 +495,7 @@
         return new RegExp('\\b' + className + '\\b');
     }
 
-    function hasClass(elmt, className) {
+    function hasClass (elmt, className) {
         return getClassRe(className).test(elmt.className);
     }
 

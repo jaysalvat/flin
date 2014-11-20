@@ -10,6 +10,7 @@
         yargs     = require("yargs"),
         exec      = require("exec"),
         fs        = require("fs"),
+        UglifyJs  = require("uglify-js"),
         gulp      = require("gulp"),
         bump      = require("gulp-bump"),
         header    = require("gulp-header"),
@@ -19,6 +20,7 @@
         jshint    = require('gulp-jshint'),
         gutil     = require("gulp-util"),
         zip       = require("gulp-zip"),
+        size      = require("gulp-sizereport"),
         rename    = require("gulp-rename"),
         replace   = require("gulp-replace"),
         gsync     = require("gulp-sync"),
@@ -208,6 +210,35 @@
             .pipe(gulp.dest('./dist/'));
     });
 
+    gulp.task('size-dev', function () {
+        return gulp.src('./src/**/*.js')
+            .pipe(size({
+                gzip: true,
+                minifier: function (content) {
+                    return UglifyJs.minify(content, { fromString: true }).code;
+                }, 
+                '*': {
+                    'maxMinifiedSize': 5900,
+                    'maxMinifiedGzippedSize': 2500
+                }
+            }));
+    });
+
+    gulp.task('size-dist', function () {
+        return gulp.src('./dist/**/*.js')
+            .pipe(size({
+                gzip: true,
+                'pin.min.js': {
+                    'maxSize': 5000,
+                    'maxGzippedSize': 2500
+                },
+                'pin.lite.min.js': {
+                    'maxSize': 1900,
+                    'maxGzippedSize': 1000
+                }
+            }));
+    });
+
     gulp.task("gh-pages", function (cb) {
         var version = getPackageJson().version;
 
@@ -233,6 +264,10 @@
         );
     });
 
+    gulp.task("watch-size", function () {
+        gulp.watch('./src/**/*.js', [ 'size-dev'] );
+    });
+
     gulp.task("test", sync([
         "lint",
         "qunit"
@@ -246,7 +281,8 @@
         "copy-lite",
         "copy", 
         "uglify",
-        "header"
+        "header",
+        "size-dist"
     ], 
     "building"));
 
@@ -266,7 +302,8 @@
         "git-commit",
         "git-tag",
         "git-push",
-        "publish"
+        "publish",
+        "size-dist"
     ], 
     "releasing"));
 
@@ -277,7 +314,8 @@
         "meta",
         "zip",
         "gh-pages",
-        "tmp-clean"
+        "tmp-clean",
+        "size-dist"
     ], 
     "publising"));
 })();
@@ -303,6 +341,7 @@ npm install --save-dev gulp-zip
 npm install --save-dev gulp-rename
 npm install --save-dev gulp-replace
 npm install --save-dev gulp-sync
+npm install --save-dev gulp-sizereport
 npm install --save-dev gulp-strip-code
 
 Gh-pages creation
