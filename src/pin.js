@@ -20,10 +20,12 @@
 
     var $,
         pin   = {}, 
-        div   = document.createElement('div'),
-        table = document.createElement('table'), 
-        tbody = document.createElement('tbody'),
-        tr    = document.createElement('tr'),
+        win   = window,
+        doc   = document,
+        div   = doc.createElement('div'),
+        table = doc.createElement('table'), 
+        tbody = doc.createElement('tbody'),
+        tr    = doc.createElement('tr'),
         containers = {
             'thead': table, 
             'tbody': table, 
@@ -50,7 +52,7 @@
             return selector;
         }
         else if (selector instanceof Function) {
-            return document.addEventListener('DOMContentLoaded', selector);
+            return doc.addEventListener('DOMContentLoaded', selector);
         }
         else if (selector instanceof Array) {
             elmts = selector;
@@ -65,7 +67,7 @@
                 return $(context).find(selector);
             } 
             else {
-                elmts = document.querySelectorAll(selector);
+                elmts = doc.querySelectorAll(selector);
             }
         }
         else if (selector instanceof NodeList) {
@@ -257,7 +259,7 @@
         is: function (selector) {
             return !!(this.map(function () {
                 if (this !== selector && !(
-                    this.webkitMatchesSelector
+                       this.webkitMatchesSelector
                     || this.mozMatchesSelector
                     || this.msMatchesSelector
                     || this.oMatchesSelector
@@ -354,7 +356,7 @@
         },
 
         trigger: function (name, args) {
-            var evt = document.createEvent('HTMLEvents');
+            var evt = doc.createEvent('HTMLEvents');
 
             evt.initEvent(name, true, true);
             evt._args = args;
@@ -482,6 +484,22 @@
         };
     });
 
+    [ 'width', 'height', 'outerWidth', 'outerHeight' ].forEach(function (name, i) {
+        $.fn[name] = function (value) {
+            var elmt = this[0],
+                key  = name.replace('outer', '').toLowerCase(),
+                ckey = capitalize(key);
+
+            if (value !== undefined) {
+                return $(this).set('+' + key, value + 'px');
+            }
+
+            return elmt === win            ? elmt['inner' + ckey] :
+                   elmt === doc            ? elmt.body['scroll' + ckey] : 
+                   [ 0, 1 ].indexOf(i) < 0 ? elmt.getClientRects()[0][key] : parseInt($(elmt).get('+' + key), 10);
+        };
+    });
+
     function getEventInfo (name) {
         var splits = name.split('.');
 
@@ -518,17 +536,21 @@
     }
 
     function getComputedStyle (elmt) {
-        return window.getComputedStyle(elmt, '');
+        return win.getComputedStyle(elmt, '');
     }
 
     function getCssStyles () {
-        return [].slice.call(getComputedStyle(document.documentElement));
+        return [].slice.call(getComputedStyle(doc.documentElement));
     }
 
     function getCssPrefix () {
         var prefix = (cssStyles.join('').match(/-(moz|webkit|ms)-/) || (cssStyles.OLink === '' && ['', 'o']))[1];
 
-        return prefix === 'ms' ? prefix : prefix[0].toUpperCase() + prefix.slice(1) ;
+        return prefix === 'ms' ? prefix : capitalize(prefix);
+    }
+
+    function capitalize (string) {
+        return string[0].toUpperCase() + string.slice(1);
     }
 
     function getCssProperty (property) {

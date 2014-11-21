@@ -136,7 +136,7 @@ Copyright (c) 2014 Jay Salvat
         $$ = $('#container');
         assert.ok($$.has('li'));
         assert.ok($$.has('a'));
-        assert.ok(!$$.has('div'));
+        assert.ok(!$$.has('table'));
     });
 
     QUnit.test('Eq', function (assert) {
@@ -468,7 +468,57 @@ Copyright (c) 2014 Jay Salvat
 
         $$.set('+width', '999px');
         assert.equal($$.get('+width'), '999px');
-
     });
 
+    QUnit.test('Width / Height', function (assert) {
+        var $$;
+
+        // width      100
+        // outerwidth 120
+        // css        100
+        // ----------------
+        // width      100
+        // outerwidth 120
+        // css        100
+        // ----------------
+        // width      100
+        // outerwidth 120
+        // css        100
+
+        $$ = $("#three div");
+
+        $('#three').set('+width', '100px');
+        assert.equal($$.width(), 100);
+
+        $$.width(100);
+        assert.equal($$.width(), 100);
+        assert.equal($$.get('+width'), '100px');
+
+        $$.width(200);
+        assert.equal($$.width(), 200);
+        assert.equal($$.outerWidth(), 200);
+        assert.equal($$.get('+width'), '200px');
+
+        $$.set('+padding', '10px');        
+        assert.equal($$.width(), 200);
+        assert.equal($$.outerWidth(), 220);
+        assert.equal($$.get('+width'), '200px');
+
+
+
+        
+        $$.height(100);
+        assert.equal($$.height(), 100);
+        assert.equal($$.get('+height'), '100px');
+
+        // $$.height(200);
+        // assert.equal($$.height(), 200);
+        // assert.equal($$.outerHeight(), 200);
+        // assert.equal($$.get('+height'), '200px');
+
+        // $$.set('+padding', '10px');        
+        // assert.equal($$.height(), 200);
+        // assert.equal($$.outerHeight(), 220);
+        // assert.equal($$.get('+height'), '200px');
+    });
 })(Pin);
