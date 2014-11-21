@@ -519,12 +519,12 @@
 
     function addClass (elmt, className) {
         if (!hasClass(elmt, className)) {
-            elmt.className = elmt.className + ' ' + className;
+            elmt.className = (elmt.className + ' ' + className).trim();
         }
     }
 
     function removeClass (elmt, className) {
-         elmt.className = elmt.className.replace(getClassRe(className), '');
+         elmt.className = elmt.className.replace(getClassRe(className), '').trim();
     }
 
     function toggleClass (elmt, className) {
