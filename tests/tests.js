@@ -8,7 +8,7 @@ Copyright (c) 2014 Jay Salvat
 (function ($) {
     "use strict";
 
-    QUnit.test('Neddle', function (assert) {
+    QUnit.test('Pin', function (assert) {
         assert.ok($()._pin);
         assert.equal($().length, 0);
     });
@@ -472,18 +472,6 @@ Copyright (c) 2014 Jay Salvat
 
     QUnit.test('Width / Height', function (assert) {
         var $$;
-
-        // width      100
-        // outerwidth 120
-        // css        100
-        // ----------------
-        // width      100
-        // outerwidth 120
-        // css        100
-        // ----------------
-        // width      100
-        // outerwidth 120
-        // css        100
 
         $$ = $("#three div");
 
