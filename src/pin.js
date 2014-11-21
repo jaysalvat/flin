@@ -402,7 +402,7 @@
                         }
                     }
 
-                    if (sign === '+') {
+                    if (sign === ':') {
                         shortKey = camelize(getCssProperty(shortKey));
                         
                         elmt.style[shortKey] = value;
@@ -426,7 +426,7 @@
                 return hasClass(elmt, shortKey);
             }
 
-            if (sign === '+') {
+            if (sign === ':') {
                 shortKey = camelize(getCssProperty(shortKey));
 
                 return elmt.style[shortKey] || getComputedStyle(elmt).getPropertyValue(shortKey);
@@ -491,12 +491,12 @@
                 ckey = capitalize(key);
 
             if (value !== undefined) {
-                return $(this).set('+' + key, value + 'px');
+                return $(this).set(':' + key, value + 'px');
             }
 
             return elmt === win            ? elmt['inner' + ckey] :
                    elmt === doc            ? elmt.body['scroll' + ckey] : 
-                   [ 0, 1 ].indexOf(i) < 0 ? elmt.getClientRects()[0][key] : parseInt($(elmt).get('+' + key), 10);
+                   [ 0, 1 ].indexOf(i) < 0 ? elmt.getClientRects()[0][key] : parseInt($(elmt).get(':' + key), 10);
         };
     });
 

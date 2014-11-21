@@ -466,8 +466,8 @@ Copyright (c) 2014 Jay Salvat
         $$.set('.bar', 'toggle');
         assert.equal($$.get('.bar'), true);
 
-        $$.set('+width', '999px');
-        assert.equal($$.get('+width'), '999px');
+        $$.set(':width', '999px');
+        assert.equal($$.get(':width'), '999px');
     });
 
     QUnit.test('Width / Height', function (assert) {
@@ -487,38 +487,38 @@ Copyright (c) 2014 Jay Salvat
 
         $$ = $("#three div");
 
-        $('#three').set('+width', '100px');
+        $('#three').set(':width', '100px');
         assert.equal($$.width(), 100);
 
         $$.width(100);
         assert.equal($$.width(), 100);
-        assert.equal($$.get('+width'), '100px');
+        assert.equal($$.get(':width'), '100px');
 
         $$.width(200);
         assert.equal($$.width(), 200);
         assert.equal($$.outerWidth(), 200);
-        assert.equal($$.get('+width'), '200px');
+        assert.equal($$.get(':width'), '200px');
 
-        $$.set('+padding', '10px');        
+        $$.set(':padding', '10px');        
         assert.equal($$.width(), 200);
         assert.equal($$.outerWidth(), 220);
-        assert.equal($$.get('+width'), '200px');
+        assert.equal($$.get(':width'), '200px');
 
 
 
         
         $$.height(100);
         assert.equal($$.height(), 100);
-        assert.equal($$.get('+height'), '100px');
+        assert.equal($$.get(':height'), '100px');
 
         // $$.height(200);
         // assert.equal($$.height(), 200);
         // assert.equal($$.outerHeight(), 200);
-        // assert.equal($$.get('+height'), '200px');
+        // assert.equal($$.get(':height'), '200px');
 
-        // $$.set('+padding', '10px');        
+        // $$.set(':padding', '10px');        
         // assert.equal($$.height(), 200);
         // assert.equal($$.outerHeight(), 220);
-        // assert.equal($$.get('+height'), '200px');
+        // assert.equal($$.get(':height'), '200px');
     });
 })(Pin);
