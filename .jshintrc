@@ -1,5 +1,6 @@
 {
     "laxbreak": true,
+    "loopfunc": false,
     "globals": {
         "module": true,
         "define": true

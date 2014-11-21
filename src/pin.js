@@ -14,7 +14,7 @@
     }
 })(this, function () {
     'use strict';
-    /* jshint laxbreak: true */ 
+    /* jshint laxbreak: true, loopfunc: true */ 
 
     var $,
         pin   = {}, 
@@ -201,6 +201,16 @@
             }));
         },
 
+        children: function (selector) {
+            var children = [];
+
+            this.each(function () {
+                children = children.concat($(this).find(':scope > ' + (selector || '*')));
+            });
+
+            return $($.uniq(children));
+        },
+
         parents: function (selector, firstOnly){
             var elmts   = this,
                 parents = [],
@@ -211,8 +221,8 @@
                 selector  = null;
             }
 
-            function findParents (elmts) {
-                return $.map(elmts, function () {
+            while (elmts.length > 0) {
+                elmts = $.map(elmts, function () {
                     parent = this.parentNode;
 
                     if (parent && parent.nodeType !== 9 && parents.indexOf(parent) < 0) {
@@ -225,10 +235,6 @@
 
                     return null;
                 });
-            }
-
-            while (elmts.length > 0) {
-                elmts = findParents(elmts);
 
                 if (firstOnly && parents.length) {
                     return $(parents);
