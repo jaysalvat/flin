@@ -193,7 +193,7 @@
     });
 
     gulp.task('copy-lite', function () {
-        return gulp.src('./src/*.js')
+        return gulp.src('./src/pin.js')
             .pipe(rename({ suffix: ".lite" }))
             .pipe(stripCode({
                 start_comment: "extended-code",
@@ -225,11 +225,11 @@
     });
 
     gulp.task('size-dist', function () {
-        return gulp.src('./dist/**/*.js')
+        return gulp.src('./dist/**/*.min.js')
             .pipe(size({
                 gzip: true,
                 'pin.min.js': {
-                    'maxSize': 5000,
+                    'maxSize': 5900,
                     'maxGzippedSize': 2500
                 },
                 'pin.lite.min.js': {
