@@ -306,52 +306,60 @@
         },
 
         on: function (name, handler, capture) {
-            var evt = getEventInfo(name),
-                key = evt.name + '.' + evt.ns,
-                handlerList,
-                handlerProxy,
-                args;
+            var $elmts = this;
 
-            return this.each(function () {
-                handlerProxy = function (e) {
-                    args = e._args || [];
-                    args.unshift(e);
+            name.split(' ').forEach(function (name) {
+                var evt = getEventInfo(name),
+                    key = evt.name + '.' + evt.ns,
+                    handlerList,
+                    handlerProxy,
+                    args;
 
-                    handler.apply(this, args);
-                };
+                return $elmts.each(function () {
+                    handlerProxy = function (e) {
+                        args = e._args || [];
+                        args.unshift(e);
 
-                handlerList = this._handlers || {};
-                handlerList[key] = handlerList[key] || [];
-                handlerList[key].push(handlerProxy);
-                
-                this._handlers = handlerList;
-                this.addEventListener(evt.name, handlerProxy, capture);
+                        handler.apply(this, args);
+                    };
+
+                    handlerList = this._handlers || {};
+                    handlerList[key] = handlerList[key] || [];
+                    handlerList[key].push(handlerProxy);
+                    
+                    this._handlers = handlerList;
+                    this.addEventListener(evt.name, handlerProxy, capture);
+                });
             });
         },
 
         off: function (name, capture) {
-            var evt = getEventInfo(name);
+            var $elmts = this;
 
-            return this.each(function () {
-                var k, i, x,
-                    handlers;
+            name.split(' ').forEach(function (name) {
+                var evt = getEventInfo(name);
 
-                handlers = this._handlers;
+                return $elmts.each(function () {
+                    var k, i, x,
+                        handlers;
 
-                for (k in handlers) {
-                    if (handlers.hasOwnProperty(k)) {
-                        i = getEventInfo(k);
+                    handlers = this._handlers;
 
-                        if ((evt.name === '*' || evt.name === i.name ) && (evt.ns === '*' || evt.ns === i.ns)) {
+                    for (k in handlers) {
+                        if (handlers.hasOwnProperty(k)) {
+                            i = getEventInfo(k);
 
-                            for (x = 0; x < handlers[k].length; x++) {
-                                this.removeEventListener(i.name, handlers[k][x], capture);
+                            if ((evt.name === '*' || evt.name === i.name ) && (evt.ns === '*' || evt.ns === i.ns)) {
+
+                                for (x = 0; x < handlers[k].length; x++) {
+                                    this.removeEventListener(i.name, handlers[k][x], capture);
+                                }
+
+                                delete handlers[k];
                             }
-
-                            delete handlers[k];
                         }
                     }
-                }
+                });
             });
         },
 
