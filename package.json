@@ -1,6 +1,6 @@
 {
   "name": "pin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pin. A tiny Javascript library.",
   "homepage": "http://pin.jaysalvat.com",
   "main": "./dist/pin.js",

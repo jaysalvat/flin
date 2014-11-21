@@ -1,4 +1,4 @@
-/*! Pin v0.1.0 (c) 2014 Jay Salvat | http://pin.jaysalvat.com */
+/*! Pin v0.1.1 (c) 2014 Jay Salvat | http://pin.jaysalvat.com */
 
 (function (context, factory) {
     'use strict';
@@ -158,19 +158,13 @@
         },
 
         find: function (selector) {
-            var elmts;
+            var elmts = [];
 
-            if (!selector) {
-                elmts = [];
-            } else if (this.length === 1) {
-                elmts = this[0].querySelectorAll(selector);
-            } else {
-                elmts = this.map(function () { 
-                    return this.querySelectorAll(selector);
-                });
-            }
-            
-            return $(elmts);
+            this.each(function () {
+                elmts = elmts.concat($(this.querySelectorAll(selector)));
+            });
+
+            return $($.uniq(elmts));
         }
     };
 
