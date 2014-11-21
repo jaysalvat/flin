@@ -3,9 +3,7 @@
     'use strict';
     /* globals define: true, module: true */
 
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {
+    if (typeof define === 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -114,19 +112,19 @@
         return pin.init(selector, context);
     };
 
-    $.each = function (elmts, callback) {
+    $.each = function (elmts, fn) {
         var i, k;
 
         if (typeof elmts.length === 'number') {
             for (i = 0; i < elmts.length; i++) {
-                if (callback.call(elmts[i], i, elmts[i]) === false) {
+                if (fn.call(elmts[i], i, elmts[i]) === false) {
                     return elmts;
                 }
             }
         } else {
             for (k in elmts) {
                 if (elmts.hasOwnProperty(k)) {
-                    if (callback.call(elmts[k], k, elmts[k]) === false) {
+                    if (fn.call(elmts[k], k, elmts[k]) === false) {
                         return elmts;
                     }
                 }
@@ -136,12 +134,12 @@
         return elmts;
     };
 
-    $.map = function (elmts, callback) {
+    $.map = function (elmts, fn) {
         var values = [],
             value;
 
         $(elmts).each(function (i) {
-            value = callback.call(this, this, i);
+            value = fn.call(this, this, i);
 
             if (value !== null) {
                 values.push(value);
