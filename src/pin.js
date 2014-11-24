@@ -408,7 +408,7 @@
                     }
 
                     if (sign === ':') {
-                        shortKey = camelize(getCssProperty(shortKey));
+                        shortKey = getCssProperty(shortKey);
                         
                         elmt.style[shortKey] = value;
                     } else {
@@ -432,7 +432,7 @@
             }
 
             if (sign === ':') {
-                shortKey = camelize(getCssProperty(shortKey));
+                shortKey = getCssProperty(shortKey);
 
                 return elmt.style[shortKey] || getComputedStyle(elmt).getPropertyValue(shortKey);
             }
@@ -539,37 +539,29 @@
     }
 
     function getCssStyles () {
-        return [].slice.call(getComputedStyle(doc.documentElement));
+        return [].slice.call(getComputedStyle(doc.body));
     }
 
     function getCssPrefix () {
         var prefix = (cssStyles.join('').match(/-(moz|webkit|ms)-/) || (cssStyles.OLink === '' && ['', 'o']))[1];
 
-        return prefix === 'ms' ? prefix : capitalize(prefix);
+        return prefix === 'ms' ? 'ms' : capitalize(prefix);
     }
 
-    function capitalize (string) {
-        return string[0].toUpperCase() + string.slice(1);
-    }
+    function getCssProperty (property) {  
+        var prefixed = ('-' + cssPrefix + '-' + property).toLowerCase();
 
-    function getCssProperty (property) {
-        var prefixed = '';
-
-        if (cssPrefix) {
-             prefixed = '-' + cssPrefix + '-' + property;
-        }
-
-        if (cssStyles.indexOf(prefixed.toLowerCase()) !== -1) {
-            return prefixed;
+        if (cssStyles.indexOf(prefixed) > -1 
+        || (/transform/.test('transform') && cssStyles.indexOf('-ms-transform-origin-x') > -1)
+        ) {
+            return cssPrefix + capitalize(property);
         }
 
         return property;
     }
 
-    function camelize (string) {
-        return string.replace(/-+(.)?/g, function (x, chr) { 
-            return chr ? chr.toUpperCase() : '';
-        });
+    function capitalize (string) {
+        return string[0].toUpperCase() + string.slice(1);
     }
     /* end-extended-code */
 
