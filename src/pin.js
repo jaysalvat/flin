@@ -304,44 +304,43 @@
         },
 
         on: function (name, handler, capture) {
-            var $elmts = this;
+            return this.each(function () {
+                var elmt = this;
 
-            name.split(' ').forEach(function (name) {
-                var evt = getEventInfo(name),
-                    key = evt.name + '.' + evt.ns,
-                    handlerList,
-                    handlerProxy,
-                    args;
+                name.split(' ').forEach(function (name) {
+                    var evt = getEventInfo(name),
+                        key = evt.name + '.' + evt.ns,
+                        handlerList,
+                        handlerProxy,
+                        args;
 
-                return $elmts.each(function () {
                     handlerProxy = function (e) {
                         args = e._args || [];
                         args.unshift(e);
 
-                        handler.apply(this, args);
+                        handler.apply(elmt, args);
                     };
 
-                    handlerList = this._handlers || {};
+                    handlerList = elmt._handlers || {};
                     handlerList[key] = handlerList[key] || [];
                     handlerList[key].push(handlerProxy);
                     
-                    this._handlers = handlerList;
-                    this.addEventListener(evt.name, handlerProxy, capture);
+                    elmt._handlers = handlerList;
+                    elmt.addEventListener(evt.name, handlerProxy, capture);
                 });
             });
         },
 
         off: function (name, capture) {
-            var $elmts = this;
+            return this.each(function () {
+                var elmt = this;
+                
+                name.split(' ').forEach(function (name) {
+                    var evt = getEventInfo(name),
+                        handlers,
+                        k, i, x;
 
-            name.split(' ').forEach(function (name) {
-                var evt = getEventInfo(name);
-
-                return $elmts.each(function () {
-                    var k, i, x,
-                        handlers;
-
-                    handlers = this._handlers;
+                    handlers = elmt._handlers;
 
                     for (k in handlers) {
                         if (handlers.hasOwnProperty(k)) {
@@ -350,7 +349,7 @@
                             if ((evt.name === '*' || evt.name === i.name ) && (evt.ns === '*' || evt.ns === i.ns)) {
 
                                 for (x = 0; x < handlers[k].length; x++) {
-                                    this.removeEventListener(i.name, handlers[k][x], capture);
+                                    elmt.removeEventListener(i.name, handlers[k][x], capture);
                                 }
 
                                 delete handlers[k];
