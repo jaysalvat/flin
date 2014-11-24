@@ -423,6 +423,10 @@
                 sign = key[0],
                 shortKey = key.slice(1);
 
+            if (!elmt) {
+                return;
+            }
+
             if (sign === '@') {
                 return elmt.getAttribute(shortKey);
             }
