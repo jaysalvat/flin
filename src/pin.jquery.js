@@ -8,10 +8,16 @@
     };
 
     $.fn.css = function (key, value) {
+        if (typeof value === undefined) {
+            return $.get(':' + key);
+        }
         return $.set(':' + key, value);
     };
 
     $.fn.attr = function (key, value) {
+        if (typeof value === undefined) {
+            return $.get('@' + key);
+        }
         return $.set('@' + key, value);
     };
 

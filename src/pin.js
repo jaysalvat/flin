@@ -304,44 +304,43 @@
         },
 
         on: function (name, handler, capture) {
-            var $elmts = this;
+            return this.each(function () {
+                var elmt = this;
 
-            name.split(' ').forEach(function (name) {
-                var evt = getEventInfo(name),
-                    key = evt.name + '.' + evt.ns,
-                    handlerList,
-                    handlerProxy,
-                    args;
+                name.split(' ').forEach(function (name) {
+                    var evt = getEventInfo(name),
+                        key = evt.name + '.' + evt.ns,
+                        handlerList,
+                        handlerProxy,
+                        args;
 
-                return $elmts.each(function () {
                     handlerProxy = function (e) {
                         args = e._args || [];
                         args.unshift(e);
 
-                        handler.apply(this, args);
+                        handler.apply(elmt, args);
                     };
 
-                    handlerList = this._handlers || {};
+                    handlerList = elmt._handlers || {};
                     handlerList[key] = handlerList[key] || [];
                     handlerList[key].push(handlerProxy);
                     
-                    this._handlers = handlerList;
-                    this.addEventListener(evt.name, handlerProxy, capture);
+                    elmt._handlers = handlerList;
+                    elmt.addEventListener(evt.name, handlerProxy, capture);
                 });
             });
         },
 
         off: function (name, capture) {
-            var $elmts = this;
+            return this.each(function () {
+                var elmt = this;
+                
+                name.split(' ').forEach(function (name) {
+                    var evt = getEventInfo(name),
+                        handlers,
+                        k, i, x;
 
-            name.split(' ').forEach(function (name) {
-                var evt = getEventInfo(name);
-
-                return $elmts.each(function () {
-                    var k, i, x,
-                        handlers;
-
-                    handlers = this._handlers;
+                    handlers = elmt._handlers;
 
                     for (k in handlers) {
                         if (handlers.hasOwnProperty(k)) {
@@ -350,7 +349,7 @@
                             if ((evt.name === '*' || evt.name === i.name ) && (evt.ns === '*' || evt.ns === i.ns)) {
 
                                 for (x = 0; x < handlers[k].length; x++) {
-                                    this.removeEventListener(i.name, handlers[k][x], capture);
+                                    elmt.removeEventListener(i.name, handlers[k][x], capture);
                                 }
 
                                 delete handlers[k];
@@ -409,7 +408,7 @@
                     }
 
                     if (sign === ':') {
-                        shortKey = camelize(getCssProperty(shortKey));
+                        shortKey = getCssProperty(shortKey);
                         
                         elmt.style[shortKey] = value;
                     } else {
@@ -433,7 +432,7 @@
             }
 
             if (sign === ':') {
-                shortKey = camelize(getCssProperty(shortKey));
+                shortKey = getCssProperty(shortKey);
 
                 return elmt.style[shortKey] || getComputedStyle(elmt).getPropertyValue(shortKey);
             }
@@ -540,37 +539,29 @@
     }
 
     function getCssStyles () {
-        return [].slice.call(getComputedStyle(doc.documentElement));
+        return [].slice.call(getComputedStyle(doc.body));
     }
 
     function getCssPrefix () {
         var prefix = (cssStyles.join('').match(/-(moz|webkit|ms)-/) || (cssStyles.OLink === '' && ['', 'o']))[1];
 
-        return prefix === 'ms' ? prefix : capitalize(prefix);
+        return prefix === 'ms' ? 'ms' : capitalize(prefix);
     }
 
-    function capitalize (string) {
-        return string[0].toUpperCase() + string.slice(1);
-    }
+    function getCssProperty (property) {  
+        var prefixed = ('-' + cssPrefix + '-' + property).toLowerCase();
 
-    function getCssProperty (property) {
-        var prefixed = '';
-
-        if (cssPrefix) {
-             prefixed = '-' + cssPrefix + '-' + property;
-        }
-
-        if (cssStyles.indexOf(prefixed.toLowerCase()) !== -1) {
-            return prefixed;
+        if (cssStyles.indexOf(prefixed) > -1 
+        || (/transform/.test('transform') && cssStyles.indexOf('-ms-transform-origin-x') > -1)
+        ) {
+            return cssPrefix + capitalize(property);
         }
 
         return property;
     }
 
-    function camelize (string) {
-        return string.replace(/-+(.)?/g, function (x, chr) { 
-            return chr ? chr.toUpperCase() : '';
-        });
+    function capitalize (string) {
+        return string[0].toUpperCase() + string.slice(1);
     }
     /* end-extended-code */
 
