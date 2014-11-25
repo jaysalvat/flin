@@ -1,3 +1,4 @@
+/*! Pin v0.1.2 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 
 (function ($) {
     'use strict';

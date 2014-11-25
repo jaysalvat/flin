@@ -165,8 +165,13 @@
             .pipe(jshint.reporter('default'));
     });
 
-    gulp.task('qunit', function () {
-        return gulp.src('./tests/test-runner.html')
+    gulp.task('qunit-src', function () {
+        return gulp.src('./tests/test-runner-src*.html')
+            .pipe(qunit());
+    });
+
+    gulp.task('qunit-dist', function () {
+        return gulp.src('./tests/test-runner-dist*.html')
             .pipe(qunit());
     });
 
@@ -210,7 +215,7 @@
             .pipe(gulp.dest('./dist/'));
     });
 
-    gulp.task('size-dev', function () {
+    gulp.task('size-src', function () {
         return gulp.src('./src/**/*.js')
             .pipe(size({
                 gzip: true,
@@ -265,23 +270,24 @@
     });
 
     gulp.task('watch-size', function () {
-        gulp.watch('./src/**/*.js', [ 'size-dev'] );
+        gulp.watch('./src/**/*.js', [ 'size-src'] );
     });
 
     gulp.task('test', sync([
         'lint',
-        'qunit'
+        'qunit-src'
     ], 
     'building'));
 
     gulp.task('build', sync([
         'lint',
-        'qunit', 
+        'qunit-src', 
         'clean', 
         'copy-lite',
         'copy', 
         'uglify',
         'header',
+        'qunit-dist',
         'size-dist'
     ], 
     'building'));
@@ -290,7 +296,7 @@
       [ 'fail-if-not-master', 'fail-if-dirty' ],
         'git-pull',
         'lint',
-        'qunit',
+        'qunit-src',
         'bump',
         'license',
         'clean',
@@ -298,6 +304,7 @@
         'copy',
         'uglify',
         'header',
+        'qunit-dist',
         'git-add',
         'git-commit',
         'git-tag',

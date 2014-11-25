@@ -487,26 +487,23 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($$.outerWidth(), 200);
         assert.equal($$.get(':width'), '200px');
 
-        $$.set(':padding', '10px');        
+        $$.set(':padding', '0 10px');        
         assert.equal($$.width(), 200);
         assert.equal($$.outerWidth(), 220);
         assert.equal($$.get(':width'), '200px');
 
-
-
-        
         $$.height(100);
         assert.equal($$.height(), 100);
         assert.equal($$.get(':height'), '100px');
 
-        // $$.height(200);
-        // assert.equal($$.height(), 200);
-        // assert.equal($$.outerHeight(), 200);
-        // assert.equal($$.get(':height'), '200px');
+        $$.height(200);
+        assert.equal($$.height(), 200);
+        assert.equal($$.outerHeight(), 200);
+        assert.equal($$.get(':height'), '200px');
 
-        // $$.set(':padding', '10px');        
-        // assert.equal($$.height(), 200);
-        // assert.equal($$.outerHeight(), 220);
-        // assert.equal($$.get(':height'), '200px');
+        $$.set(':padding', '10px 0');        
+        assert.equal($$.height(), 200);
+        assert.equal($$.outerHeight(), 220);
+        assert.equal($$.get(':height'), '200px');
     });
 })(Pin);
