@@ -544,7 +544,7 @@
     }
 
     function getCssStyles () {
-        return [].slice.call(getComputedStyle(doc.body));
+        return [].slice.call(getComputedStyle(doc.documentElement));
     }
 
     function getCssPrefix () {
