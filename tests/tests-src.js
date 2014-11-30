@@ -268,25 +268,27 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('DOM replaceWith', function (assert) {
         var $$,
             $new,
-            html = '<div><span>ok</span></div>';
+            html = '<div id="new"><span>ok</span></div>';
 
         $$ = $('#one');
-        $new = $$.replaceWith(html);
+        $$.replaceWith(html);
+        $new = $('#new');
         assert.equal($new[0].outerHTML, html);
 
         $$ = $('#two');
-        $new = $$.replaceWith($(html));
+        $$.replaceWith($(html).set('@id', 'new2'));
+        $new = $('#new2').set('@id', 'new');
         assert.equal($new[0].outerHTML, html);
     });
 
     QUnit.test('DOM wrapWith', function (assert) {
         var $$,
             $new,
-            html = '<div><span></span></div>';
+            html = '<div id="new"><span></span></div>';
 
         $$ = $('#one');
-        $new = $$.wrapWith(html);
-        
+        $$.wrapWith(html);
+        $new = $('#new');
         assert.ok($new.is('div'));
         assert.ok($new.has('span'));
         assert.ok($new.has('ul#one'));

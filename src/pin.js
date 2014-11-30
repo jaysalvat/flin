@@ -101,11 +101,9 @@
         container = containers[name];
         container.innerHTML = html;
 
-        elmts = $(container.childNodes).each(function () {
+        return $(container.childNodes).each(function () {
             container.removeChild(this);
         });
-
-        return elmts;
     };
 
     $ = function (selector, context) {
@@ -270,29 +268,20 @@
         },
 
         replaceWith: function (html) {
-            var elmt = $(html)[0];
-
-            return this.map(function () {
-                $(this).before(elmt).remove();
-
-                return elmt;
-            });
+            return this.before(html).remove();
         },
 
         wrapWith: function (html) {
-            var elmt = $(html)[0],
-                last = elmt;
+            var elmt = $(html)[0];
 
-            return this.map(function () {
+            return this.each(function () {
                 $(this).before(elmt);
 
-                while (last.children.length) {
-                    last = last.children[0];
+                while (elmt.children.length) {
+                    elmt = elmt.children[0];
                 }
 
-                $(last).append(this);
-
-                return elmt;
+                $(elmt).append(this);
             });
         },
 
