@@ -79,6 +79,24 @@
         });
     };
 
+    $.fn.val = function (value) {
+        if (value === undefined) {
+            if (this[0].multiple) {
+                return [].map.call(
+                    elmt.querySelectorAll('option[selected'), function (option) { 
+                      return option.value; 
+                    }
+                );
+            }
+            
+            return this[0].value;
+        }
+
+        return this.each(function (i) {
+            this.value = functionOrValue(value, this, i);
+        });
+    };
+
     $.fn.empty = function () {
         return this.each(function () {
             this.innerHTML = '';
