@@ -16,11 +16,11 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Wrap method', function (assert) {
         var $$,
             $new,
-            html = '<div><span></span></div>';
+            html = '<div id="new"><span></span></div>';
 
         $$ = $('#one');
-        $new = $$.wrap(html);
-        
+        $$.wrap(html);
+        $new = $('#new');
         assert.ok($new.is('div'));
         assert.ok($new.has('span'));
         assert.ok($new.has('ul#one'));

@@ -85,7 +85,7 @@
         $.each($.fn, function (i) {
             elmts[i] = $.fn[i];
         });
-        
+
         return elmts;
     };
 
