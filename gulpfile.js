@@ -312,8 +312,7 @@
         'git-commit',
         'git-tag',
         'git-push',
-        'publish',
-        'size-dist'
+        'publish'
     ], 
     'releasing'));
 
