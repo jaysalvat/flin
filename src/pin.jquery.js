@@ -226,16 +226,4 @@
             return chr ? chr.toUpperCase() : '';
         });
     }
-
-    // $.fn.get = function (idx)  {
-    //     if (idx === undefined) {
-    //         return this.toArray();
-    //     }
-
-    //     if (idx < 0) {
-    //         return this[idx + this.length];
-    //     }
-
-    //     return this[idx];
-    // };
 }(Pin));

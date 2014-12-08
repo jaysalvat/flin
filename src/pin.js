@@ -409,6 +409,18 @@
         },
 
         get: function (key) {
+            if (key === undefined) {
+                return [].slice.call(this);
+            }
+
+            if (key >= 0) {
+                return this[key];
+            }
+
+            if (key < 0) {
+                return this[key + this.length];
+            }
+
             var elmt = this[0],
                 sign = key[0],
                 shortKey = key.slice(1);

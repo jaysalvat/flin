@@ -470,6 +470,12 @@ Copyright (c) 2014 Jay Salvat
 
         $$.set(':width', '999px');
         assert.equal($$.get(':width'), '999px');
+
+        $$ = $('#two li');
+        assert.ok($($$.get(0)).is('.item1'));
+        assert.ok($($$.get(1)).is('.item2'));
+        assert.ok($($$.get(-1)).is('.item2'));
+        assert.equal($$.get().length, 2);
     });
 
     QUnit.test('Width / Height', function (assert) {
