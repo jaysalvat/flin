@@ -33,7 +33,7 @@
         banner: {
             content: [
                 '/*! Pin v<%= pkg.version %> (c) <%= year %> Jay Salvat http://pin.jaysalvat.com */',
-                '',
+                ''
             ].join('\n'),
             vars: {
                 pkg: pkg,
@@ -194,6 +194,8 @@
 
     gulp.task('copy', function () {
         return gulp.src('./src/*.js')
+            .pipe(replace(/\s*\/\*\s*extended-code\s*\*\/\s*\n/g, '\n\n'))
+            .pipe(replace(/\s*\/\*\s*end-extended-code\s*\*\/\s*\n/g, '\n\n'))
             .pipe(gulp.dest('./dist/'));
     });
 
@@ -202,8 +204,9 @@
             .pipe(rename({ suffix: '.lite' }))
             .pipe(stripCode({
                 start_comment: 'extended-code',
-                end_comment: 'end-extended-code'
+                end_comment:   'end-extended-code'
             }))
+            .pipe(replace(/\s*\n{3,}/g, '\n\n'))
             .pipe(gulp.dest('./dist'));
     });
 
