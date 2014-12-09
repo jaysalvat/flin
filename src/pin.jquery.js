@@ -167,6 +167,12 @@
             findCallbackInArgs(args).apply(this);
         });  
     };
+    
+    $.fn.error = function(msg) {
+        throw new Error(msg);
+    };
+
+    $.fn.noop = function() {};
 
     [ 'fadeIn', 'slideDown', 'fadeOut', 'slideUp', 'fadeToggle', 'slideToggle', 'fadeTo' ].forEach(function (name, i) {
         if (i === 0 || i === 1) {
