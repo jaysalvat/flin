@@ -32,8 +32,7 @@
             'td':    tr, 
             'th':    tr,
             '*':     div
-        },
-        tagRe = /^\s*<(\w+|!)[^>]*>/;
+        };
 
     /* extended-code */
     var cssStyles = getCssStyles(),
@@ -92,7 +91,7 @@
     pin.fragment = function (html) {
         var container,
             elmts,
-            name = html.match(tagRe)[1];
+            name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
         if (!containers[name]) {
             name = '*';
@@ -399,7 +398,7 @@
 
                     if (sign === ':') {
                         shortKey = getCssProperty(shortKey);
-                        
+
                         elmt.style[shortKey] = value;
                     } else {
                         elmt[key] = value;
@@ -413,12 +412,8 @@
                 return [].slice.call(this);
             }
 
-            if (key >= 0) {
-                return this[key];
-            }
-
-            if (key < 0) {
-                return this[key + this.length];
+            if (typeof key === 'number') {
+                return  this[key < 0 ? key + this.length : key ];
             }
 
             var elmt = this[0],
@@ -467,6 +462,7 @@
     };
 
     /* extended-code */
+
     [ 'prepend', 'append', 'before', 'after' ].forEach(function (name, i) {
         $.fn[name] = function (html) {
             var elmt = $(html)[0];
@@ -557,8 +553,10 @@
     function getCssProperty (property) {  
         var prefixed = ('-' + cssPrefix + '-' + property).toLowerCase();
 
-        if (cssStyles.indexOf(prefixed) > -1 
-        || (/transform/.test('transform') && cssStyles.indexOf('-ms-transform-origin-x') > -1)
+        property = property.toLowerCase();
+
+        if ((cssStyles.indexOf(property) < 0 && cssStyles.indexOf(prefixed) > -1)
+        || (/transform/.test(property) && cssStyles.indexOf('-ms-transform-origin-x') > -1)
         ) {
             return cssPrefix + capitalize(property);
         }
@@ -567,7 +565,9 @@
     }
 
     function capitalize (string) {
-        return string[0].toUpperCase() + string.slice(1);
+        return string.replace(/-|^(.)/g, function(match, group) {
+            return group.toUpperCase();
+        });
     }
     /* end-extended-code */
 
