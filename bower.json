@@ -1,6 +1,6 @@
 {
   "name": "pin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://pin.jaysalvat.com",
   "main": "./dist/pin.min.js"
 }

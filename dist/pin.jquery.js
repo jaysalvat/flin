@@ -1,4 +1,4 @@
-/*! Pin v0.1.4 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.5 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 
 (function ($) {
     'use strict';
@@ -10,6 +10,15 @@
 
     $.fn.css = function (key, value) {
         if (value === undefined) {
+            if (typeof key === 'object') {
+                var values = {};
+
+                $.each(key, function (key, value) {
+                    values[':' + key] = value;
+                });
+
+                return this.set(values);
+            }
             return this.get(':' + key);
         }
         
@@ -168,6 +177,12 @@
             findCallbackInArgs(args).apply(this);
         });  
     };
+    
+    $.fn.error = function(msg) {
+        throw new Error(msg);
+    };
+
+    $.fn.noop = function() {};
 
     [ 'fadeIn', 'slideDown', 'fadeOut', 'slideUp', 'fadeToggle', 'slideToggle', 'fadeTo' ].forEach(function (name, i) {
         if (i === 0 || i === 1) {
