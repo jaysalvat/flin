@@ -6,7 +6,7 @@ Copyright (c) 2014 Jay Salvat
 /* global Pin:true, QUnit:true */
 
 (function ($) {
-    "use strict";
+    'use strict';
 
     QUnit.test('Pin', function (assert) {
         assert.ok($()._pin);
@@ -29,16 +29,24 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Css method', function (assert) {
         var $$;
 
-        $$ = $("#one");
+        $$ = $('#one');
 
         $$.css('width', '999px');
         assert.equal($$.css('width'), '999px');
+
+        $$.css({
+            'width': '199px',
+            'height': '299px'
+        });
+
+        assert.equal($$.css('width'), '199px');
+        assert.equal($$.css('height'), '299px');
     });
 
     QUnit.test('Class methods', function (assert) {
         var $$;
 
-        $$ = $("#one");
+        $$ = $('#one');
 
         $$.addClass('foo');
         assert.equal($$.hasClass('foo'), true);
@@ -59,7 +67,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Attr method', function (assert) {
         var $$;
 
-        $$ = $("#one");
+        $$ = $('#one');
 
         $$.attr('id', 'bar');
         assert.equal($$.attr('id'), 'bar');
@@ -71,7 +79,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Text method', function (assert) {
         var $$;
 
-        $$ = $("#one");
+        $$ = $('#one');
 
         $$.text('foo');
         assert.equal($$.text(), 'foo');
@@ -80,7 +88,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Html method', function (assert) {
         var $$;
 
-        $$ = $("#one");
+        $$ = $('#one');
 
         $$.html('<span>ok</span>');
         assert.equal($$.html(), '<span>ok</span>');
@@ -89,7 +97,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Size method', function (assert) {
         var $$;
 
-        $$ = $("#one li");
+        $$ = $('#one li');
 
         assert.equal($$.size(), 5);
     });
@@ -97,7 +105,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('First/last methods', function (assert) {
         var $$;
 
-        $$ = $("#one li");
+        $$ = $('#one li');
 
         assert.ok($$.first().hasClass('item1'));
         assert.ok($$.last().hasClass('item5'));
@@ -106,7 +114,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('ToAray method', function (assert) {
         var $$;
 
-        $$ = $("#one li");
+        $$ = $('#one li');
 
         assert.equal($$._pin, true);
         assert.equal($$.length, 5);
@@ -122,7 +130,7 @@ Copyright (c) 2014 Jay Salvat
     QUnit.test('Data method', function (assert) {
         var $$;
 
-        $$ = $("#one li");
+        $$ = $('#one li');
 
         assert.equal($$.data('foo'), undefined);
         assert.equal($$.data('foo-bar'), undefined);

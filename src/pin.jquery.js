@@ -9,6 +9,15 @@
 
     $.fn.css = function (key, value) {
         if (value === undefined) {
+            if (typeof key === 'object') {
+                var values = {};
+
+                $.each(key, function (key, value) {
+                    values[':' + key] = value;
+                });
+
+                return this.set(values);
+            }
             return this.get(':' + key);
         }
         
