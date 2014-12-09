@@ -1,10 +1,10 @@
-/*! Pin v0.1.4 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.5 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 
 (function (context, factory) {
     'use strict';
     /* globals define: true, module: true */
 
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -33,8 +33,7 @@
             'td':    tr, 
             'th':    tr,
             '*':     div
-        },
-        tagRe = /^\s*<(\w+|!)[^>]*>/;
+        };
 
     pin.init = function (selector, context) {
         var elmts;
@@ -51,10 +50,10 @@
         else if (selector instanceof Array) {
             elmts = selector;
         }
-        else if (typeof selector === 'string') {
+        else if (typeof selector == 'string') {
             selector = selector.trim();
 
-            if (selector[0] === '<') {
+            if (selector[0] == '<') {
                 elmts = pin.fragment(selector);
             }
             else if (context) {
@@ -67,7 +66,7 @@
         else if (selector instanceof NodeList) {
             elmts = selector;
         }
-        else if (typeof selector === 'object') {
+        else if (typeof selector == 'object') {
             elmts = [ selector ];
         }
 
@@ -88,7 +87,7 @@
     pin.fragment = function (html) {
         var container,
             elmts,
-            name = html.match(tagRe)[1];
+            name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
         if (!containers[name]) {
             name = '*';
@@ -109,7 +108,7 @@
     $.each = function (elmts, fn) {
         var i, k;
 
-        if (typeof elmts.length === 'number') {
+        if (typeof elmts.length == 'number') {
             for (i = 0; i < elmts.length; i++) {
                 if (fn.call(elmts[i], i, elmts[i]) === false) {
                     return elmts;
@@ -145,7 +144,7 @@
 
     $.uniq = function (elmts) {
         return [].filter.call(elmts, function (elmt, idx) { 
-            return elmts.indexOf(elmt) === idx;
+            return elmts.indexOf(elmt) == idx;
         });
     };
 
