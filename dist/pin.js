@@ -1,10 +1,10 @@
-/*! Pin v0.1.4 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.5 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 
 (function (context, factory) {
     'use strict';
     /* globals define: true, module: true */
 
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -33,8 +33,7 @@
             'td':    tr, 
             'th':    tr,
             '*':     div
-        },
-        tagRe = /^\s*<(\w+|!)[^>]*>/;
+        };
 
     var cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
@@ -54,10 +53,10 @@
         else if (selector instanceof Array) {
             elmts = selector;
         }
-        else if (typeof selector === 'string') {
+        else if (typeof selector == 'string') {
             selector = selector.trim();
 
-            if (selector[0] === '<') {
+            if (selector[0] == '<') {
                 elmts = pin.fragment(selector);
             }
             else if (context) {
@@ -70,7 +69,7 @@
         else if (selector instanceof NodeList) {
             elmts = selector;
         }
-        else if (typeof selector === 'object') {
+        else if (typeof selector == 'object') {
             elmts = [ selector ];
         }
 
@@ -91,7 +90,7 @@
     pin.fragment = function (html) {
         var container,
             elmts,
-            name = html.match(tagRe)[1];
+            name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
         if (!containers[name]) {
             name = '*';
@@ -112,7 +111,7 @@
     $.each = function (elmts, fn) {
         var i, k;
 
-        if (typeof elmts.length === 'number') {
+        if (typeof elmts.length == 'number') {
             for (i = 0; i < elmts.length; i++) {
                 if (fn.call(elmts[i], i, elmts[i]) === false) {
                     return elmts;
@@ -148,7 +147,7 @@
 
     $.uniq = function (elmts) {
         return [].filter.call(elmts, function (elmt, idx) { 
-            return elmts.indexOf(elmt) === idx;
+            return elmts.indexOf(elmt) == idx;
         });
     };
 
@@ -157,14 +156,14 @@
             args = [].slice.call(arguments),
             i, k;
 
-        if (typeof deep === 'boolean') {
+        if (typeof deep == 'boolean') {
             args.shift();
         }
 
         for (i = 0; i < args.length; i++) {
             for (k in args[i]) {
                 if (args[i].hasOwnProperty(k)) {
-                    if (deep === true && typeof args[i][k] === 'object') {
+                    if (deep === true && typeof args[i][k] == 'object') {
                         obj[k] = $.extend(deep, obj[k], args[i][k]);
                     } else {
                         obj[k] = args[i][k];
@@ -205,7 +204,7 @@
                 parents = [],
                 parent;
 
-            if (typeof selector === 'boolean')  {
+            if (typeof selector == 'boolean')  {
                 firstOnly = selector;
                 selector  = null;
             }
@@ -214,7 +213,7 @@
                 elmts = $.map(elmts, function () {
                     parent = this.parentNode;
 
-                    if (parent !== doc && parents.indexOf(parent) < 0) {
+                    if (parent != doc && parents.indexOf(parent) < 0) {
                         if ($(parent).is(selector || '*')) {
                             parents.push(parent);
                         }
@@ -251,7 +250,7 @@
 
         is: function (selector) {
             return !!(this.map(function () {
-                if (this !== selector && !(
+                if (this != selector && !(
                        this.webkitMatchesSelector
                     || this.mozMatchesSelector
                     || this.msMatchesSelector
@@ -332,7 +331,7 @@
                         if (handlers.hasOwnProperty(k)) {
                             i = getEventInfo(k);
 
-                            if ((evt.name === '*' || evt.name === i.name ) && (evt.ns === '*' || evt.ns === i.ns)) {
+                            if ((evt.name == '*' || evt.name == i.name ) && (evt.ns == '*' || evt.ns == i.ns)) {
 
                                 for (x = 0; x < handlers[k].length; x++) {
                                     elmt.removeEventListener(i.name, handlers[k][x], capture);
@@ -371,11 +370,11 @@
                     var sign = key[0],
                         shortKey = key.slice(1);
 
-                    if (typeof value === 'function') {
+                    if (typeof value == 'function') {
                         value = value.call(elmt, i);
                     }
 
-                    if (sign === '@') {
+                    if (sign == '@') {
                         if (value === undefined) {
                             elmt.removeAttribute(shortKey);
                         } else {
@@ -383,19 +382,19 @@
                         }
                     }
 
-                    if (sign === '.') {
-                        if (value === 'toggle') {
+                    if (sign == '.') {
+                        if (value == 'toggle') {
                             toggleClass(elmt, shortKey);
-                        } else if (value === 'remove') {
+                        } else if (value == 'remove') {
                             removeClass(elmt, shortKey);
                         } else {
                             addClass(elmt, shortKey);
                         }
                     }
 
-                    if (sign === ':') {
+                    if (sign == ':') {
                         shortKey = getCssProperty(shortKey);
-                        
+
                         elmt.style[shortKey] = value;
                     } else {
                         elmt[key] = value;
@@ -409,12 +408,8 @@
                 return [].slice.call(this);
             }
 
-            if (key >= 0) {
-                return this[key];
-            }
-
-            if (key < 0) {
-                return this[key + this.length];
+            if (typeof key == 'number') {
+                return  this[key < 0 ? key + this.length : key ];
             }
 
             var elmt = this[0],
@@ -425,15 +420,15 @@
                 return;
             }
 
-            if (sign === '@') {
+            if (sign == '@') {
                 return elmt.getAttribute(shortKey);
             }
 
-            if (sign === '.') {
+            if (sign == '.') {
                 return hasClass(elmt, shortKey);
             }
 
-            if (sign === ':') {
+            if (sign == ':') {
                 shortKey = getCssProperty(shortKey);
 
                 return elmt.style[shortKey] || getComputedStyle(elmt).getPropertyValue(shortKey);
@@ -470,11 +465,11 @@
                     return this.insertBefore(elmt, this.firstChild);   
                 }
 
-                if (i === 1) {
+                if (i == 1) {
                     return this.appendChild(elmt);
                 }
 
-                if (i === 2) {
+                if (i == 2) {
                     return this.parentNode.insertBefore(elmt, this);
                 }
 
@@ -493,8 +488,8 @@
                 return $(this).set(':' + key, value + 'px');
             }
 
-            return elmt === win            ? elmt['inner' + ckey] :
-                   elmt === doc            ? elmt.body['scroll' + ckey] : 
+            return elmt == win             ? elmt['inner' + ckey] :
+                   elmt == doc             ? elmt.body['scroll' + ckey] : 
                    [ 0, 1 ].indexOf(i) < 0 ? elmt.getClientRects()[0][key] : parseInt($(elmt).get(':' + key), 10);
         };
     });
@@ -545,14 +540,16 @@
     function getCssPrefix () {
         var prefix = (cssStyles.join('').match(/-(moz|webkit|ms)-/) || (cssStyles.OLink === '' && ['', 'o']))[1];
 
-        return prefix === 'ms' ? 'ms' : capitalize(prefix);
+        return prefix == 'ms' ? 'ms' : capitalize(prefix);
     }
 
     function getCssProperty (property) {  
         var prefixed = ('-' + cssPrefix + '-' + property).toLowerCase();
 
-        if (cssStyles.indexOf(prefixed) > -1 
-        || (/transform/.test('transform') && cssStyles.indexOf('-ms-transform-origin-x') > -1)
+        property = property.toLowerCase();
+
+        if ((cssStyles.indexOf(property) < 0 && cssStyles.indexOf(prefixed) > -1)
+        || (/transform/.test(property) && cssStyles.indexOf('-ms-transform-origin-x') > -1)
         ) {
             return cssPrefix + capitalize(property);
         }
@@ -561,7 +558,9 @@
     }
 
     function capitalize (string) {
-        return string[0].toUpperCase() + string.slice(1);
+        return string.replace(/-|^(.)/g, function(match, group) {
+            return group.toUpperCase();
+        });
     }
 
     return $;
