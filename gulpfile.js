@@ -245,11 +245,11 @@
             .pipe(size({
                 gzip: true,
                 'pin.min.js': {
-                    'maxSize': 5900,
+                    'maxSize': 6000,
                     'maxGzippedSize': 2500
                 },
                 'pin.lite.min.js': {
-                    'maxSize': 1900,
+                    'maxSize': 2000,
                     'maxGzippedSize': 1000
                 }
             }));
