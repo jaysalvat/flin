@@ -1,11 +1,10 @@
-/*! Pin v0.1.5 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.6 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 
 (function ($) {
     'use strict';
-    /* jshint laxbreak: true */ 
 
-    $.fn.wrap = function (value) {
-        return this.wrapWith(value);
+    $.fn.replaceWith = function (value) {
+        return this.replace(value);
     };
 
     $.fn.css = function (key, value) {
