@@ -266,11 +266,11 @@
             })).length;
         },
 
-        replaceWith: function (html) {
+        replace: function (html) {
             return this.before(html).remove();
         },
 
-        wrapWith: function (html) {
+        wrap: function (html) {
             var elmt = $(html)[0];
 
             return this.each(function () {
@@ -465,13 +465,13 @@
     };
 
     /* extended-code */
-
     [ 'prepend', 'append', 'before', 'after' ].forEach(function (name, i) {
         $.fn[name] = function (html) {
             var newElmt = $(html)[0];
 
             return this.each(function () {
-                var elmt = this;
+                var elmt   = this,
+                    parent = elmt.parentNode;
 
                 if (i === 0) {
                     return elmt.insertBefore(newElmt, elmt.firstChild);   
@@ -482,10 +482,10 @@
                 }
 
                 if (i == 2) {
-                    return elmt.parentNode.insertBefore(newElmt, elmt);
+                    return parent.insertBefore(newElmt, elmt);
                 }
 
-                return elmt.parentNode.insertBefore(newElmt, elmt.nextSibling);
+                return parent.insertBefore(newElmt, elmt.nextSibling);
             });
         };
     });
@@ -500,9 +500,19 @@
                 return this.set(':' + key, value + 'px');
             }
 
-            return elmt == win             ? elmt['inner' + ckey] :
-                   elmt == doc             ? elmt.body['scroll' + ckey] : 
-                   [ 0, 1 ].indexOf(i) < 0 ? elmt.getClientRects()[0][key] : parseInt($(elmt).get(':' + key), 10);
+            if (elmt == win) {
+                return elmt['inner' + ckey];
+            }
+
+            if (elmt == doc) {
+                return elmt.body['scroll' + ckey];
+            }
+
+            if ([ 0, 1 ].indexOf(i) < 0) {
+                return elmt.getClientRects()[0][key];
+            }
+
+            return parseInt($(elmt).get(':' + key), 10);
         };
     });
 
@@ -572,7 +582,7 @@
             return cssPrefix + capitalize(camelize(property));
         }
 
-        return camelize(property);
+        return property;
     }
 
     function capitalize (string) {

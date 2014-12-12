@@ -1,10 +1,9 @@
 
 (function ($) {
     'use strict';
-    /* jshint laxbreak: true */ 
 
-    $.fn.wrap = function (value) {
-        return this.wrapWith(value);
+    $.fn.replaceWith = function (value) {
+        return this.replace(value);
     };
 
     $.fn.css = function (key, value) {
