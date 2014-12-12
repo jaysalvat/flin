@@ -153,6 +153,14 @@
             .pipe(gulp.dest('.'));
     });
 
+    gulp.task('version', function () {
+        var version = getPackageJson().version;
+
+        return gulp.src('./dist/**.js')
+            .pipe(replace(/%VERSION%/g, version))
+            .pipe(gulp.dest('./dist/'));
+    });
+
     gulp.task('license', function () {
         return gulp.src([ './LICENSE', './README.md' ])
             .pipe(replace(/(Copyright )(\d{4})/g, '$1' + gutil.date('yyyy')))
@@ -290,6 +298,7 @@
         'copy', 
         'uglify',
         'header',
+        'version',
         'qunit-dist',
         'size-dist'
     ], 
@@ -307,6 +316,7 @@
         'copy',
         'uglify',
         'header',
+        'version',
         'qunit-dist',
         'git-add',
         'git-commit',
