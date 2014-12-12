@@ -1,8 +1,8 @@
 {
     "laxbreak": true,
     "loopfunc": false,
+    "eqeqeq":   false,
     "globals": {
-        "module": true,
         "define": true
     }
 }
