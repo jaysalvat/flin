@@ -1,7 +1,5 @@
-
 (function (context, factory) {
     'use strict';
-    /* globals define: true, module: true */
 
     if (typeof define == 'function' && define.amd) {
         define([], factory);
@@ -14,7 +12,6 @@
     }
 })(this, function () {
     'use strict';
-    /* jshint laxbreak: true, loopfunc: true */ 
 
     var $,
         pin   = {}, 
@@ -90,7 +87,6 @@
 
     pin.fragment = function (html) {
         var container,
-            elmts,
             name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
         if (!containers[name]) {
@@ -555,21 +551,29 @@
 
         property = property.toLowerCase();
 
-        if ((cssStyles.indexOf(property) < 0 && cssStyles.indexOf(prefixed) > -1)
-        || (/transform/.test(property) && cssStyles.indexOf('-ms-transform-origin-x') > -1)
-        ) {
-            return cssPrefix + capitalize(property);
+        if (cssStyles.indexOf(property) > -1) {
+            return camelize(property);
+        }
+
+        if (cssStyles.indexOf(prefixed) > -1 || (/transform/.test(property) && cssStyles.indexOf('-ms-transform-origin-x') > -1)) {
+            return cssPrefix + capitalize(camelize(property));
         }
 
         return property;
     }
 
     function capitalize (string) {
-        return string.replace(/-|^(.)/g, function(match, group) {
+        return string[0].toUpperCase() + string.slice(1);
+    }
+
+    function camelize (string) {
+        return string.replace(/-(.)/g, function(match, group) {
             return group.toUpperCase();
         });
     }
     /* end-extended-code */
+
+    $.pin = '%VERSION%';
 
     return $;
 });
