@@ -300,7 +300,7 @@
 
                 name.split(' ').forEach(function (name) {
                     var evt = getEventInfo(name),
-                        key = evt.name + '.' + evt.ns,
+                        key = evt.n + '.' + evt.ns,
                         handlerList,
                         handlerProxy,
                         args;
@@ -309,7 +309,9 @@
                         args = e._args || [];
                         args.unshift(e);
 
-                        handler.apply(elmt, args);
+                        if (matchEvents(getEventInfo(e._name), evt)) {
+                            handler.apply(elmt, args);
+                        }
                     };
 
                     handlerList = elmt._handlers || {};
@@ -317,7 +319,7 @@
                     handlerList[key].push(handlerProxy);
                     
                     elmt._handlers = handlerList;
-                    elmt.addEventListener(evt.name, handlerProxy, capture);
+                    elmt.addEventListener(evt.n, handlerProxy, capture);
                 });
             });
         },
@@ -337,12 +339,10 @@
                         if (handlers.hasOwnProperty(k)) {
                             i = getEventInfo(k);
 
-                            if ((evt.name == '*' || evt.name == i.name ) && (evt.ns == '*' || evt.ns == i.ns)) {
-
+                            if (matchEvents(evt, i)) {
                                 for (x = 0; x < handlers[k].length; x++) {
-                                    elmt.removeEventListener(i.name, handlers[k][x], capture);
+                                    elmt.removeEventListener(i.n, handlers[k][x], capture);
                                 }
-
                                 delete handlers[k];
                             }
                         }
@@ -356,6 +356,7 @@
 
             evt.initEvent(name.replace(/\..*/, ''), true, true);
             evt._args = args;
+            evt._name = name;
 
             return this.each(function () {
                 this.dispatchEvent(evt);
@@ -505,12 +506,16 @@
         };
     });
 
+    function matchEvents (evt1, evt2) {
+        return (evt1.n == '*' || evt2.n == evt1.n ) && (evt1.ns == '*' || evt2.ns == evt1.ns);
+    }
+
     function getEventInfo (name) {
         var splits = name.split('.');
 
         return {
-            name: splits[0] || '*',
-            ns:   splits[1] || '*'
+            n:  splits[0] || '*',
+            ns: splits[1] || '*'
         };
     }
 
