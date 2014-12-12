@@ -1,8 +1,6 @@
-/*! Pin v0.1.5 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
-
+/*! Pin v0.1.6 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 (function (context, factory) {
     'use strict';
-    /* globals define: true, module: true */
 
     if (typeof define == 'function' && define.amd) {
         define([], factory);
@@ -15,7 +13,6 @@
     }
 })(this, function () {
     'use strict';
-    /* jshint laxbreak: true, loopfunc: true */ 
 
     var $,
         pin   = {}, 
@@ -86,7 +83,6 @@
 
     pin.fragment = function (html) {
         var container,
-            elmts,
             name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
         if (!containers[name]) {
@@ -168,6 +164,8 @@
             return $($.uniq(elmts));
         }
     };
+
+    $.pin = '0.1.6';
 
     return $;
 });

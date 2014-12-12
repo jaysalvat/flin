@@ -1,8 +1,6 @@
-/*! Pin v0.1.5 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
-
+/*! Pin v0.1.6 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 (function (context, factory) {
     'use strict';
-    /* globals define: true, module: true */
 
     if (typeof define == 'function' && define.amd) {
         define([], factory);
@@ -15,7 +13,6 @@
     }
 })(this, function () {
     'use strict';
-    /* jshint laxbreak: true, loopfunc: true */ 
 
     var $,
         pin   = {}, 
@@ -89,7 +86,6 @@
 
     pin.fragment = function (html) {
         var container,
-            elmts,
             name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
         if (!containers[name]) {
@@ -187,11 +183,13 @@
 
         closest: function (selector) {
             return $.uniq(this.map(function () {
-                if ($(this).is(selector)) {
+                var $elmt = $(this);
+
+                if ($elmt.is(selector)) {
                     return this;
                 }
 
-                return $(this).parent(selector)[0];    
+                return $elmt.parent(selector)[0];    
             }));
         },
 
@@ -250,23 +248,25 @@
 
         is: function (selector) {
             return !!(this.map(function () {
-                if (this != selector && !(
-                       this.webkitMatchesSelector
-                    || this.mozMatchesSelector
-                    || this.msMatchesSelector
-                    || this.oMatchesSelector
-                    || this.matchesSelector
-                ).call(this, selector)) {
+                var elmt = this;
+
+                if (elmt != selector && !(
+                       elmt.webkitMatchesSelector
+                    || elmt.mozMatchesSelector
+                    || elmt.msMatchesSelector
+                    || elmt.oMatchesSelector
+                    || elmt.matchesSelector
+                ).call(elmt, selector)) {
                     return null;
                 }
             })).length;
         },
 
-        replaceWith: function (html) {
+        replace: function (html) {
             return this.before(html).remove();
         },
 
-        wrapWith: function (html) {
+        wrap: function (html) {
             var elmt = $(html)[0];
 
             return this.each(function () {
@@ -282,8 +282,10 @@
 
         remove: function () {
             return this.each(function () {
-                if (this.parentNode) {
-                    this.parentNode.removeChild(this);
+                var elmt = this;
+
+                if (elmt.parentNode) {
+                    elmt.parentNode.removeChild(elmt);
                 }
             });
         },
@@ -294,7 +296,7 @@
 
                 name.split(' ').forEach(function (name) {
                     var evt = getEventInfo(name),
-                        key = evt.name + '.' + evt.ns,
+                        key = evt.n + '.' + evt.ns,
                         handlerList,
                         handlerProxy,
                         args;
@@ -303,7 +305,9 @@
                         args = e._args || [];
                         args.unshift(e);
 
-                        handler.apply(elmt, args);
+                        if (matchEvents(getEventInfo(e._name), evt)) {
+                            handler.apply(elmt, args);
+                        }
                     };
 
                     handlerList = elmt._handlers || {};
@@ -311,7 +315,7 @@
                     handlerList[key].push(handlerProxy);
                     
                     elmt._handlers = handlerList;
-                    elmt.addEventListener(evt.name, handlerProxy, capture);
+                    elmt.addEventListener(evt.n, handlerProxy, capture);
                 });
             });
         },
@@ -331,12 +335,10 @@
                         if (handlers.hasOwnProperty(k)) {
                             i = getEventInfo(k);
 
-                            if ((evt.name == '*' || evt.name == i.name ) && (evt.ns == '*' || evt.ns == i.ns)) {
-
+                            if (matchEvents(evt, i)) {
                                 for (x = 0; x < handlers[k].length; x++) {
-                                    elmt.removeEventListener(i.name, handlers[k][x], capture);
+                                    elmt.removeEventListener(i.n, handlers[k][x], capture);
                                 }
-
                                 delete handlers[k];
                             }
                         }
@@ -348,8 +350,9 @@
         trigger: function (name, args) {
             var evt = doc.createEvent('HTMLEvents');
 
-            evt.initEvent(name, true, true);
+            evt.initEvent(name.replace(/\..*/, ''), true, true);
             evt._args = args;
+            evt._name = name;
 
             return this.each(function () {
                 this.dispatchEvent(evt);
@@ -358,8 +361,8 @@
 
         set: function (key, value) {
             return this.each(function (i) {
-                var values = key,
-                    elmt = this;
+                var elmt = this,
+                    values = key;
 
                 if (typeof key !== 'object') {
                     values = {};
@@ -458,22 +461,25 @@
 
     [ 'prepend', 'append', 'before', 'after' ].forEach(function (name, i) {
         $.fn[name] = function (html) {
-            var elmt = $(html)[0];
+            var newElmt = $(html)[0];
 
             return this.each(function () {
+                var elmt   = this,
+                    parent = elmt.parentNode;
+
                 if (i === 0) {
-                    return this.insertBefore(elmt, this.firstChild);   
+                    return elmt.insertBefore(newElmt, elmt.firstChild);   
                 }
 
                 if (i == 1) {
-                    return this.appendChild(elmt);
+                    return elmt.appendChild(newElmt);
                 }
 
                 if (i == 2) {
-                    return this.parentNode.insertBefore(elmt, this);
+                    return parent.insertBefore(newElmt, elmt);
                 }
 
-                return this.parentNode.insertBefore(elmt, this.nextSibling);
+                return parent.insertBefore(newElmt, elmt.nextSibling);
             });
         };
     });
@@ -485,26 +491,40 @@
                 ckey = capitalize(key);
 
             if (value !== undefined) {
-                return $(this).set(':' + key, value + 'px');
+                return this.set(':' + key, value + 'px');
             }
 
-            return elmt == win             ? elmt['inner' + ckey] :
-                   elmt == doc             ? elmt.body['scroll' + ckey] : 
-                   [ 0, 1 ].indexOf(i) < 0 ? elmt.getClientRects()[0][key] : parseInt($(elmt).get(':' + key), 10);
+            if (elmt == win) {
+                return elmt['inner' + ckey];
+            }
+
+            if (elmt == doc) {
+                return elmt.body['scroll' + ckey];
+            }
+
+            if ([ 0, 1 ].indexOf(i) < 0) {
+                return elmt.getClientRects()[0][key];
+            }
+
+            return parseInt($(elmt).get(':' + key), 10);
         };
     });
+
+    function matchEvents (evt1, evt2) {
+        return (evt1.n == '*' || evt2.n == evt1.n ) && (evt1.ns == '*' || evt2.ns == evt1.ns);
+    }
 
     function getEventInfo (name) {
         var splits = name.split('.');
 
         return {
-            name: splits[0] || '*',
-            ns:   splits[1] || '*'
+            n:  splits[0] || '*',
+            ns: splits[1] || '*'
         };
     }
 
     function getClassRe (className) {
-        return new RegExp('\\b' + className + '\\b');
+        return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
     }
 
     function hasClass (elmt, className) {
@@ -518,7 +538,7 @@
     }
 
     function removeClass (elmt, className) {
-         elmt.className = elmt.className.replace(getClassRe(className), '').trim();
+         elmt.className = elmt.className.replace(getClassRe(className), ' ').trim();
     }
 
     function toggleClass (elmt, className) {
@@ -548,20 +568,28 @@
 
         property = property.toLowerCase();
 
-        if ((cssStyles.indexOf(property) < 0 && cssStyles.indexOf(prefixed) > -1)
-        || (/transform/.test(property) && cssStyles.indexOf('-ms-transform-origin-x') > -1)
-        ) {
-            return cssPrefix + capitalize(property);
+        if (cssStyles.indexOf(property) > -1) {
+            return camelize(property);
+        }
+
+        if (cssStyles.indexOf(prefixed) > -1 || (/transform/.test(property) && cssStyles.indexOf('-ms-transform-origin-x') > -1)) {
+            return cssPrefix + capitalize(camelize(property));
         }
 
         return property;
     }
 
     function capitalize (string) {
-        return string.replace(/-|^(.)/g, function(match, group) {
+        return string[0].toUpperCase() + string.slice(1);
+    }
+
+    function camelize (string) {
+        return string.replace(/-(.)/g, function(match, group) {
             return group.toUpperCase();
         });
     }
+
+    $.pin = '0.1.6';
 
     return $;
 });
