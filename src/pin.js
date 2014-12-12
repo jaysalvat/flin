@@ -309,7 +309,7 @@
                         args = e._args || [];
                         args.unshift(e);
 
-                        if (matchEvents(getEventInfo(e._name), evt)) {
+                        if (!e._name || matchEvents(getEventInfo(e._name), evt)) {
                             handler.apply(elmt, args);
                         }
                     };
