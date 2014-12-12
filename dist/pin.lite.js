@@ -1,4 +1,4 @@
-/*! Pin v0.1.6 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.7 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
 (function (context, factory) {
     'use strict';
 
@@ -165,7 +165,7 @@
         }
     };
 
-    $.pin = '0.1.6';
+    $.pin = '0.1.7';
 
     return $;
 });
