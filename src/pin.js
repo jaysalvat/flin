@@ -188,7 +188,7 @@
         closest: function (selector) {
             return $.uniq(this.map(function () {
                 var $elmt = $(this);
-                
+
                 if ($elmt.is(selector)) {
                     return this;
                 }
@@ -354,7 +354,7 @@
         trigger: function (name, args) {
             var evt = doc.createEvent('HTMLEvents');
 
-            evt.initEvent(name, true, true);
+            evt.initEvent(name.replace(/\..*/, ''), true, true);
             evt._args = args;
 
             return this.each(function () {
