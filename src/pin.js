@@ -187,11 +187,13 @@
 
         closest: function (selector) {
             return $.uniq(this.map(function () {
-                if ($(this).is(selector)) {
+                var $elmt = $(this);
+                
+                if ($elmt.is(selector)) {
                     return this;
                 }
 
-                return $(this).parent(selector)[0];    
+                return $elmt.parent(selector)[0];    
             }));
         },
 
@@ -250,13 +252,15 @@
 
         is: function (selector) {
             return !!(this.map(function () {
-                if (this != selector && !(
-                       this.webkitMatchesSelector
-                    || this.mozMatchesSelector
-                    || this.msMatchesSelector
-                    || this.oMatchesSelector
-                    || this.matchesSelector
-                ).call(this, selector)) {
+                var elmt = this;
+
+                if (elmt != selector && !(
+                       elmt.webkitMatchesSelector
+                    || elmt.mozMatchesSelector
+                    || elmt.msMatchesSelector
+                    || elmt.oMatchesSelector
+                    || elmt.matchesSelector
+                ).call(elmt, selector)) {
                     return null;
                 }
             })).length;
@@ -282,8 +286,10 @@
 
         remove: function () {
             return this.each(function () {
-                if (this.parentNode) {
-                    this.parentNode.removeChild(this);
+                var elmt = this;
+
+                if (elmt.parentNode) {
+                    elmt.parentNode.removeChild(elmt);
                 }
             });
         },
@@ -358,8 +364,8 @@
 
         set: function (key, value) {
             return this.each(function (i) {
-                var values = key,
-                    elmt = this;
+                var elmt = this,
+                    values = key;
 
                 if (typeof key !== 'object') {
                     values = {};
@@ -461,22 +467,24 @@
 
     [ 'prepend', 'append', 'before', 'after' ].forEach(function (name, i) {
         $.fn[name] = function (html) {
-            var elmt = $(html)[0];
+            var newElmt = $(html)[0];
 
             return this.each(function () {
+                var elmt = this;
+
                 if (i === 0) {
-                    return this.insertBefore(elmt, this.firstChild);   
+                    return elmt.insertBefore(newElmt, elmt.firstChild);   
                 }
 
                 if (i == 1) {
-                    return this.appendChild(elmt);
+                    return elmt.appendChild(newElmt);
                 }
 
                 if (i == 2) {
-                    return this.parentNode.insertBefore(elmt, this);
+                    return elmt.parentNode.insertBefore(newElmt, elmt);
                 }
 
-                return this.parentNode.insertBefore(elmt, this.nextSibling);
+                return elmt.parentNode.insertBefore(newElmt, elmt.nextSibling);
             });
         };
     });
@@ -488,7 +496,7 @@
                 ckey = capitalize(key);
 
             if (value !== undefined) {
-                return $(this).set(':' + key, value + 'px');
+                return this.set(':' + key, value + 'px');
             }
 
             return elmt == win             ? elmt['inner' + ckey] :
@@ -507,7 +515,7 @@
     }
 
     function getClassRe (className) {
-        return new RegExp('\\b' + className + '\\b');
+        return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
     }
 
     function hasClass (elmt, className) {
@@ -521,7 +529,7 @@
     }
 
     function removeClass (elmt, className) {
-         elmt.className = elmt.className.replace(getClassRe(className), '').trim();
+         elmt.className = elmt.className.replace(getClassRe(className), ' ').trim();
     }
 
     function toggleClass (elmt, className) {
@@ -559,7 +567,7 @@
             return cssPrefix + capitalize(camelize(property));
         }
 
-        return property;
+        return camelize(property);
     }
 
     function capitalize (string) {
