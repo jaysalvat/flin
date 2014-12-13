@@ -1,3 +1,6 @@
+/* global define: true */
+/* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
+
 (function (context, factory) {
     'use strict';
 
@@ -307,7 +310,10 @@
 
                     handlerProxy = function (e) {
                         args = e._args || [];
-                        args.unshift(e);
+                        
+                        if (args[0] !== e) {
+                            args.unshift(e);
+                        }
 
                         if (!e._name || matchEvents(getEventInfo(e._name), evt)) {
                             handler.apply(elmt, args);
@@ -353,10 +359,10 @@
 
         trigger: function (name, args) {
             var evt = doc.createEvent('HTMLEvents');
-
-            evt.initEvent(name.replace(/\..*/, ''), true, true);
+            
             evt._args = args;
             evt._name = name;
+            evt.initEvent(name.replace(/\..*/, ''), true, true);
 
             return this.each(function () {
                 this.dispatchEvent(evt);
@@ -368,7 +374,7 @@
                 var elmt = this,
                     values = key;
 
-                if (typeof key !== 'object') {
+                if (typeof key != 'object') {
                     values = {};
                     values[key] = value;
                 }
