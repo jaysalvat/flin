@@ -1,4 +1,4 @@
-/*! Pin v0.1.8 (c) 2015 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.9 (c) 2015 Jay Salvat http://pin.jaysalvat.com */
 /* global define: true */
 /* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
 
@@ -607,7 +607,7 @@
         });
     }
 
-    $.pin = '0.1.8';
+    $.pin = '0.1.9';
 
     return $;
 });
