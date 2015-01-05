@@ -201,7 +201,17 @@
         },
 
         children: function (selector) {
-            return this.find(':scope > ' + (selector || '*'));
+            var elements = [];
+
+            this.each(function () {
+                [].slice.call(this.children).forEach(function (child) {
+                    if (!selector || $(child).is(selector)) {
+                        elements.push(child);
+                    }
+                });
+            });
+
+            return $(elements);
         },
 
         parents: function (selector, firstOnly){

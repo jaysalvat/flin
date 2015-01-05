@@ -88,6 +88,20 @@ Copyright (c) 2014 Jay Salvat
         assert.ok($$.is('div'));
     });
 
+    QUnit.test('Children', function (assert) {
+        var $$ = $('#container'),
+            $children;
+
+        $children = $$.children();
+        assert.equal($children.length, 3);
+
+        $children = $$.children('ul');
+        assert.equal($children.length, 2);
+
+        $children = $$.children('#two');
+        assert.equal($children.length, 1);
+    });
+
     QUnit.test('Fragment', function (assert) {
         var $$;
 
