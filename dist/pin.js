@@ -1,8 +1,13 @@
-/*! Pin v0.1.7 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.8 (c) 2015 Jay Salvat http://pin.jaysalvat.com */
+/* global define: true */
+/* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
+
 (function (context, factory) {
     'use strict';
-
-    if (typeof define == 'function' && define.amd) {
+    
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = factory();
+    } else if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -194,7 +199,17 @@
         },
 
         children: function (selector) {
-            return this.find(':scope > ' + (selector || '*'));
+            var elements = [];
+
+            this.each(function () {
+                [].slice.call(this.children).forEach(function (child) {
+                    if (!selector || $(child).is(selector)) {
+                        elements.push(child);
+                    }
+                });
+            });
+
+            return $(elements);
         },
 
         parents: function (selector, firstOnly){
@@ -303,7 +318,10 @@
 
                     handlerProxy = function (e) {
                         args = e._args || [];
-                        args.unshift(e);
+                        
+                        if (args[0] !== e) {
+                            args.unshift(e);
+                        }
 
                         if (!e._name || matchEvents(getEventInfo(e._name), evt)) {
                             handler.apply(elmt, args);
@@ -349,10 +367,10 @@
 
         trigger: function (name, args) {
             var evt = doc.createEvent('HTMLEvents');
-
-            evt.initEvent(name.replace(/\..*/, ''), true, true);
+            
             evt._args = args;
             evt._name = name;
+            evt.initEvent(name.replace(/\..*/, ''), true, true);
 
             return this.each(function () {
                 this.dispatchEvent(evt);
@@ -364,7 +382,7 @@
                 var elmt = this,
                     values = key;
 
-                if (typeof key !== 'object') {
+                if (typeof key != 'object') {
                     values = {};
                     values[key] = value;
                 }
@@ -589,7 +607,7 @@
         });
     }
 
-    $.pin = '0.1.7';
+    $.pin = '0.1.8';
 
     return $;
 });

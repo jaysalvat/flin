@@ -1,8 +1,13 @@
-/*! Pin v0.1.7 (c) 2014 Jay Salvat http://pin.jaysalvat.com */
+/*! Pin v0.1.8 (c) 2015 Jay Salvat http://pin.jaysalvat.com */
+/* global define: true */
+/* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
+
 (function (context, factory) {
     'use strict';
-
-    if (typeof define == 'function' && define.amd) {
+    
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = factory();
+    } else if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
@@ -165,7 +170,7 @@
         }
     };
 
-    $.pin = '0.1.7';
+    $.pin = '0.1.8';
 
     return $;
 });

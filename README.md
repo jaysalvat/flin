@@ -24,7 +24,7 @@ If you need jQuery compatibily with a lighter lib, choose [http://zeptojs.com/](
 The MIT License (MIT)
 ---------------------
 
-Copyright 2014 Jay Salvat
+Copyright 2015 Jay Salvat
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
