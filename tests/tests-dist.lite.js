@@ -79,32 +79,4 @@ Copyright (c) 2014 Jay Salvat
         });
         assert.expect(15);
     });
-
-    QUnit.test('Map', function (assert) {
-        var $$,
-            $filtered ;
-
-        $$ = $('#one li');
-
-        $filtered = $$.map(function (elmt, i) {
-            if (i%2) {
-                return elmt;
-            }
-            return null;
-        });
-        assert.equal($filtered.length, 2);
-        assert.equal($filtered[0].textContent, 'item 1-2');
-        assert.equal($filtered[1].textContent, 'item 1-4');
-
-        $filtered = $$.map(function (elmt, i) {
-            if (i%2) {
-                return null;
-            }
-            return elmt;
-        });
-        assert.equal($filtered.length, 3);
-        assert.equal($filtered[0].textContent, 'item 1-1');
-        assert.equal($filtered[1].textContent, 'item 1-3');
-        assert.equal($filtered[2].textContent, 'item 1-5');
-    });
 })(Pin);

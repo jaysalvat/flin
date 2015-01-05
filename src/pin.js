@@ -132,6 +132,14 @@
         return elmts;
     };
 
+    $.uniq = function (elmts) {
+        return [].filter.call(elmts, function (elmt, idx) { 
+            return elmts.indexOf(elmt) == idx;
+        });
+    };
+
+    /* extended-code */
+
     $.map = function (elmts, fn) {
         var values = [],
             value;
@@ -147,14 +155,6 @@
         return values;
     };
 
-    $.uniq = function (elmts) {
-        return [].filter.call(elmts, function (elmt, idx) { 
-            return elmts.indexOf(elmt) == idx;
-        });
-    };
-
-    /* extended-code */
-    
     $.extend = function (deep) {
         var obj  = {},
             args = [].slice.call(arguments),
@@ -461,14 +461,14 @@
 
             return elmt[key]; 
         },
+
+        map: function (callback) {
+            return $($.map(this, callback));
+        },
         /* end-extended-code */
 
         each: function (callback) {
             return $.each(this, callback);
-        },
-
-        map: function (callback) {
-            return $($.map(this, callback));
         },
 
         find: function (selector) {

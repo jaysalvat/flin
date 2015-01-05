@@ -128,21 +128,6 @@
         return elmts;
     };
 
-    $.map = function (elmts, fn) {
-        var values = [],
-            value;
-
-        $(elmts).each(function (i) {
-            value = fn.call(this, this, i);
-
-            if (value !== null) {
-                values.push(value);
-            }
-        });
-
-        return values;
-    };
-
     $.uniq = function (elmts) {
         return [].filter.call(elmts, function (elmt, idx) { 
             return elmts.indexOf(elmt) == idx;
@@ -153,10 +138,6 @@
 
         each: function (callback) {
             return $.each(this, callback);
-        },
-
-        map: function (callback) {
-            return $($.map(this, callback));
         },
 
         find: function (selector) {

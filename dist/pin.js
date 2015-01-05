@@ -131,6 +131,12 @@
         return elmts;
     };
 
+    $.uniq = function (elmts) {
+        return [].filter.call(elmts, function (elmt, idx) { 
+            return elmts.indexOf(elmt) == idx;
+        });
+    };
+
     $.map = function (elmts, fn) {
         var values = [],
             value;
@@ -144,12 +150,6 @@
         });
 
         return values;
-    };
-
-    $.uniq = function (elmts) {
-        return [].filter.call(elmts, function (elmt, idx) { 
-            return elmts.indexOf(elmt) == idx;
-        });
     };
 
     $.extend = function (deep) {
@@ -458,12 +458,12 @@
             return elmt[key]; 
         },
 
-        each: function (callback) {
-            return $.each(this, callback);
-        },
-
         map: function (callback) {
             return $($.map(this, callback));
+        },
+
+        each: function (callback) {
+            return $.each(this, callback);
         },
 
         find: function (selector) {
