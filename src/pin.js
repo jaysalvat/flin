@@ -3,8 +3,10 @@
 
 (function (context, factory) {
     'use strict';
-
-    if (typeof define == 'function' && define.amd) {
+    
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = factory();
+    } else if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
         context.Pin = factory();
