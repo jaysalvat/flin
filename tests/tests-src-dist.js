@@ -206,34 +206,6 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($$.eq($$.length - 1)[0].textContent, 'item 1-4');
     });
 
-    QUnit.test('Map', function (assert) {
-        var $$,
-            $filtered ;
-
-        $$ = $('#one li');
-
-        $filtered = $$.map(function (elmt, i) {
-            if (i%2) {
-                return elmt;
-            }
-            return null;
-        });
-        assert.equal($filtered.length, 2);
-        assert.equal($filtered.eq(0)[0].textContent, 'item 1-2');
-        assert.equal($filtered.eq(1)[0].textContent, 'item 1-4');
-
-        $filtered = $$.map(function (elmt, i) {
-            if (i%2) {
-                return null;
-            }
-            return elmt;
-        });
-        assert.equal($filtered.length, 3);
-        assert.equal($filtered.eq(0)[0].textContent, 'item 1-1');
-        assert.equal($filtered.eq(1)[0].textContent, 'item 1-3');
-        assert.equal($filtered.eq(2)[0].textContent, 'item 1-5');
-    });
-
     QUnit.test('DOM remove', function (assert) {
         var $$;
 
