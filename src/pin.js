@@ -3,7 +3,7 @@
 
 (function (context, factory) {
     'use strict';
-    
+
     if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
     } else if (typeof define == 'function' && define.amd) {
@@ -101,9 +101,7 @@
         container = containers[name];
         container.innerHTML = html;
 
-        return $(container.childNodes).each(function () {
-            container.removeChild(this);
-        });
+        return $(container.childNodes);
     };
 
     $ = function (selector, context) {
