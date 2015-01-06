@@ -234,7 +234,7 @@
                     return UglifyJs.minify(content, { fromString: true }).code;
                 }, 
                 '*': {
-                    'maxMinifiedSize': 5900,
+                    'maxMinifiedSize': 6000,
                     'maxMinifiedGzippedSize': 2500
                 }
             }));

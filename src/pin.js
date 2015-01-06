@@ -133,9 +133,11 @@
     };
 
     $.uniq = function (elmts) {
-        return [].filter.call(elmts, function (elmt, idx) { 
+        var elements = [].filter.call(elmts, function (elmt, idx) { 
             return elmts.indexOf(elmt) == idx;
         });
+
+        return $(elements);
     };
 
     /* extended-code */
@@ -478,7 +480,7 @@
                 elmts = elmts.concat($(this.querySelectorAll(selector)));
             });
 
-            return $($.uniq(elmts));
+            return $.uniq(elmts);
         }
     };
 
