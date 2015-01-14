@@ -6,19 +6,22 @@ A taste of jQuery without the fat.
 [![Build Status](https://travis-ci.org/jaysalvat/pin.png?branch=master)](https://travis-ci.org/jaysalvat/pin)
 [![Bower version](https://badge.fury.io/bo/pin.svg)](http://badge.fury.io/bo/pin)
 
-Pin is a tiny Javascript library with some jQuery features:
+Pin is a tiny Javascript library with some common jQuery features:
 DOM traversing, DOM manipulation, namespaced Events and plugin architecture.
 
-Unit tests are green on IE9+, Chrome 30+, Firefox 30+, Opera 20+, Safari 5+ 
+Unit tests turn green on IE9+, Chrome 30+, Firefox 30+, Opera 20+, Safari 5+ 
 that should makes it a great choice for most modern apps, mobile or not.
 
-The minified library weighs ~5.5kb, ~2.3kb GZIPed.
-An even lighter alternative (~1.6kb, ~850 bytes GZIPed) is available with only
+The minified library weighs ~5.5kb, ~2.5kb GZIPed.
+An even lighter alternative (~1.5kb, ~900 bytes GZIPed) is available with only
 selector and plugin architecture as an empty shell to let you build your own perfect library.
 
-**Important Note:** Even if the Pin API is near jQuery API, its goals is ABSOLUTELY NOT
-to be compatible at all.
-If you need jQuery compatibily with a lighter lib, choose [http://zeptojs.com/](Zepto).
+**Important Note:** 
+Even if the Pin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible at all.
+Pin provides an experimental [https://github.com/jaysalvat/pin/blob/master/dist/pin.jquery.js](plugin)
+to increase jQuery compatibily with some basic jQuery plugins.
+If you need a more complete jQuery compatibily choose [http://zeptojs.com/](Zepto). 
+
 
 
 The MIT License (MIT)
