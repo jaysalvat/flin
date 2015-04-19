@@ -284,6 +284,10 @@
         gulp.watch('./src/**/*.js', [ 'size-src'] );
     });
 
+    gulp.task('watch', function () {
+        gulp.watch('./src/**/*.js', [ 'build' ] );
+    });
+
     gulp.task('test', sync([
         'lint',
         'qunit-src'
@@ -343,7 +347,6 @@
 
 NPM Installation
 ----------------
-
 npm install --save-dev del
 npm install --save-dev yargs
 npm install --save-dev exec
@@ -365,7 +368,6 @@ npm install --save-dev gulp-strip-code
 
 Gh-pages creation
 -----------------
-
 git checkout --orphan gh-pages
 git rm -rf .
 rm -fr

@@ -131,7 +131,7 @@
     };
 
     $.uniq = function (elmts) {
-        var elmts = [].filter.call(elmts, function (elmt, idx) { 
+        elmts = [].filter.call(elmts, function (elmt, idx) { 
             return elmts.indexOf(elmt) == idx;
         });
 
@@ -263,7 +263,7 @@
                 ).call(elmt, selector)) {
                     elmts++;
                 }
-            })
+            });
 
             return !!elmts;
         },
@@ -474,7 +474,7 @@
                 var elmt   = this,
                     parent = elmt.parentNode;
 
-                if (i == 0) {
+                if (i === 0) {
                     return elmt.insertBefore(newElmt, elmt.firstChild);   
                 }
 

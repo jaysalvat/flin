@@ -4,7 +4,7 @@
 
 (function (context, factory) {
     'use strict';
-    
+
     if (typeof module != 'undefined' && module.exports) {
         module.exports = factory();
     } else if (typeof define == 'function' && define.amd) {
@@ -97,9 +97,7 @@
         container = containers[name];
         container.innerHTML = html;
 
-        return $(container.childNodes).each(function () {
-            container.removeChild(this);
-        });
+        return $(container.childNodes);
     };
 
     $ = function (selector, context) {
@@ -129,9 +127,11 @@
     };
 
     $.uniq = function (elmts) {
-        return [].filter.call(elmts, function (elmt, idx) { 
+        elmts = [].filter.call(elmts, function (elmt, idx) { 
             return elmts.indexOf(elmt) == idx;
         });
+
+        return $(elmts);
     };
 
     $.fn = {
@@ -147,7 +147,7 @@
                 elmts = elmts.concat($(this.querySelectorAll(selector)));
             });
 
-            return $($.uniq(elmts));
+            return $.uniq(elmts);
         }
     };
 
