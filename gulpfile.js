@@ -200,8 +200,9 @@
             .pipe(gulp.dest('./dist/'));
     });
 
-    gulp.task('copy', function () {
+    gulp.task('copy-extended', function () {
         return gulp.src('./src/*.js')
+            .pipe(rename({ suffix: '.extended' }))
             .pipe(replace(/\s*\/\*\s*extended-code\s*\*\/\s*\n/g, '\n\n'))
             .pipe(replace(/\s*\/\*\s*end-extended-code\s*\*\/\s*\n/g, '\n\n'))
             .pipe(gulp.dest('./dist/'));
@@ -209,10 +210,9 @@
 
     gulp.task('copy-lite', function () {
         return gulp.src('./src/pin.js')
-            .pipe(rename({ suffix: '.lite' }))
             .pipe(stripCode({
                 start_comment: 'extended-code',
-                end_comment:   'end-extended-code'
+                end_comment: 'end-extended-code'
             }))
             .pipe(replace(/\s*\n{3,}/g, '\n\n'))
             .pipe(gulp.dest('./dist'));
@@ -280,8 +280,22 @@
         );
     });
 
+    gulp.task("npm-publish", function (cb) {
+        exec('npm publish', function (err, output, code) {
+                if (code !== 0) {
+                    return cb(err + output);
+                }
+                return cb();
+            }
+        );
+    });
+
     gulp.task('watch-size', function () {
         gulp.watch('./src/**/*.js', [ 'size-src'] );
+    });
+
+    gulp.task('watch', function () {
+        gulp.watch('./src/**/*.js', [ 'build' ] );
     });
 
     gulp.task('test', sync([
@@ -295,7 +309,7 @@
         'qunit-src', 
         'clean', 
         'copy-lite',
-        'copy', 
+        'copy-extended', 
         'uglify',
         'header',
         'version',
@@ -313,7 +327,7 @@
         'license',
         'clean',
         'copy-lite',
-        'copy',
+        'copy-extended',
         'uglify',
         'header',
         'version',
@@ -322,7 +336,8 @@
         'git-commit',
         'git-tag',
         'git-push',
-        'publish'
+        'publish',
+        'npm-publish'
     ], 
     'releasing'));
 
@@ -343,7 +358,6 @@
 
 NPM Installation
 ----------------
-
 npm install --save-dev del
 npm install --save-dev yargs
 npm install --save-dev exec
@@ -365,7 +379,6 @@ npm install --save-dev gulp-strip-code
 
 Gh-pages creation
 -----------------
-
 git checkout --orphan gh-pages
 git rm -rf .
 rm -fr

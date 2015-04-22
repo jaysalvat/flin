@@ -1,3 +1,4 @@
+/*! Pin v0.1.9 (c) 2015 Jay Salvat http://pin.jaysalvat.com */
 /* global define: true */
 /* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
 
@@ -36,10 +37,8 @@
             '*':     div
         };
 
-    /* extended-code */
     var cssStyles = getCssStyles(),
         cssPrefix = getCssPrefix();
-    /* end-extended-code */
 
     pin.init = function (selector, context) {
         var elmts;
@@ -138,7 +137,6 @@
         return $(elmts);
     };
 
-    /* extended-code */
     $.extend = function (deep) {
         var obj  = {},
             args = [].slice.call(arguments),
@@ -162,10 +160,9 @@
 
         return obj;
     };
-    /* end-extended-code */
 
     $.fn = {
-        /* extended-code */
+
         slice: function () {
             return $([].slice.apply(this, arguments));
         },
@@ -448,7 +445,6 @@
 
             return elmt[key]; 
         },
-        /* end-extended-code */
 
         each: function (callback) {
             return $.each(this, callback);
@@ -465,7 +461,6 @@
         }
     };
 
-    /* extended-code */
     [ 'prepend', 'append', 'before', 'after' ].forEach(function (name, i) {
         $.fn[name] = function (html) {
             var newElmt = $(html)[0];
@@ -595,9 +590,8 @@
             return group.toUpperCase();
         });
     }
-    /* end-extended-code */
 
-    $.pin = '%VERSION%';
+    $.pin = '0.1.9';
 
     return $;
 });
