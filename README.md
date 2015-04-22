@@ -6,23 +6,110 @@ A taste of jQuery without the fat.
 [![Build Status](https://travis-ci.org/jaysalvat/pin.png?branch=master)](https://travis-ci.org/jaysalvat/pin)
 [![Bower version](https://badge.fury.io/bo/pin.svg)](http://badge.fury.io/bo/pin)
 
-Pin is a tiny Javascript library with some common jQuery features:
-DOM traversing, DOM manipulation, namespaced Events and plugin architecture.
+Pin is a tiny AMD-ready Javascript library (~1,5Kb minified, ~900 bytes GZIPed) bringing some jQuery sugar 
+to your vanilla javascript developments such as selectors, iterations, DOM element creation and plugins.
+
+     npm install pinjs
+
+Or the [bower](http://bower.io) way.
+
+     bower install pinjs
+
+Examples
+--------
+
+Some examples.
+
+### Selectors
+
+    $('.example').each(function () {
+        this.style.display = 'none';
+    });
+
+### Element creation with HTML
+
+    $('<h1>Example</h1><div class="example"></div>').each(function () {
+        document.body.appendChild(this);
+    });
+
+### Plugin
+
+    $.fn.hide = function () {
+        return this.each(function () {
+            this.style.display = 'none';
+        });
+    };
+
+    $('.example').hide();
+
+### DOM loaded
+
+    $(function () {
+        alert('The DOM is loaded.');
+    });
+
+Pin extended
+------------
+
+The extended version of Pin (~5.5Kb minified, ~2.5kb GZIPed) provides some extra DOM traversing, DOM/classes/styles 
+manipulation, and namespaced Events methods.
+
+A better documentation coming soon...
+
+    * $.extend
+    * $.uniq
+    * $.each
+
+    * $('elmts').width()
+    * $('elmts').height()
+    * $('elmts').outerWidth()
+    * $('elmts').outerHeight()
+
+    * $('elmts').find()
+    * $('elmts').each()
+    * $('elmts').slice()
+
+    * $('elmt').parent()
+    * $('elmt').parents()
+    * $('elmt').children()
+    * $('elmt').closest()
+
+    * $('elmt').eq()
+    * $('elmt').index()
+    * $('elmt').has()
+    * $('elmt').is()
+
+    * $('elmt').append()
+    * $('elmt').prepend()
+    * $('elmt').before()
+    * $('elmt').after()
+    * $('elmt').wrap()
+    * $('elmt').replace()
+
+    * $('elmt').on()
+    * $('elmt').off()
+    * $('elmt').trigger()
+
+    * $('elmt').set('.classname')
+    * $('elmt').set('.classname', 'remove')
+    * $('elmt').set('.classname', 'toggle')
+    * $('elmt').get('.classname')
+
+    * $('elmt').set('@src', '');
+    * $('elmt').get('@src')
+
+    * $('elmt').set(':color', 'red')
+    * $('elmt').get(':Color')
+
+No Ajax methods planned.
+
+**Important Note:** 
+Even if the extended Pin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible at all.
+
+## Compatibility
 
 Unit tests turn green on IE9+, Chrome 30+, Firefox 30+, Opera 20+, Safari 5+ 
 that should makes it a great choice for most modern apps, mobile or not.
-
-The minified library weighs ~5.5kb, ~2.5kb GZIPed.
-An even lighter alternative (~1.5kb, ~900 bytes GZIPed) is available with only
-selector and plugin architecture as an empty shell to let you build your own perfect library.
-
-**Important Note:** 
-Even if the Pin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible at all.
-Pin provides an experimental [https://github.com/jaysalvat/pin/blob/master/dist/pin.jquery.js](plugin)
-to increase jQuery compatibily with some basic jQuery plugins.
-If you need a more complete jQuery compatibily choose [http://zeptojs.com/](Zepto). 
-
-
 
 The MIT License (MIT)
 ---------------------
