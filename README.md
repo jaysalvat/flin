@@ -64,55 +64,47 @@ manipulation, and namespaced Events methods.
 
 A better documentation coming soon...
 
-* $.extend()
-* $.uniq()
-* $.each()
+- $.extend()
+- $.uniq()
+- $.each()
+- $('elmts').width()
+- $('elmts').height()
+- $('elmts').outerWidth()
+- $('elmts').outerHeight()
+- $('elmts').find()
+- $('elmts').each()
+- $('elmts').slice()
+- $('elmt').parent()
+- $('elmt').parents()
+- $('elmt').children()
+- $('elmt').closest()
+- $('elmt').eq()
+- $('elmt').index()
+- $('elmt').has()
+- $('elmt').is()
+- $('elmt').append()
+- $('elmt').prepend()
+- $('elmt').before()
+- $('elmt').after()
+- $('elmt').wrap()
+- $('elmt').replace()
+- $('elmt').on()
+- $('elmt').off()
+- $('elmt').trigger()
 
-* $('elmts').width()
-* $('elmts').height()
-* $('elmts').outerWidth()
-* $('elmts').outerHeight()
-
-* $('elmts').find()
-* $('elmts').each()
-* $('elmts').slice()
-
-* $('elmt').parent()
-* $('elmt').parents()
-* $('elmt').children()
-* $('elmt').closest()
-
-* $('elmt').eq()
-* $('elmt').index()
-* $('elmt').has()
-* $('elmt').is()
-
-* $('elmt').append()
-* $('elmt').prepend()
-* $('elmt').before()
-* $('elmt').after()
-* $('elmt').wrap()
-* $('elmt').replace()
-
-* $('elmt').on()
-* $('elmt').off()
-* $('elmt').trigger()
-
-* $('elmt').set('.classname')
-* $('elmt').set('.classname', 'remove')
-* $('elmt').set('.classname', 'toggle')
-* $('elmt').get('.classname')
-
-* $('elmt').set('@src', '');
-* $('elmt').get('@src')
-
-* $('elmt').set(':color', 'red')
-* $('elmt').get(':Color')
+- $('elmt').set('.classname')
+- $('elmt').set('.classname', 'remove')
+- $('elmt').set('.classname', 'toggle')
+- $('elmt').get('.classname')
+- $('elmt').set('@src', '');
+- $('elmt').get('@src')
+- $('elmt').set(':color', 'red')
+- $('elmt').get(':Color')
 
 No Ajax methods planned.
 
 **Important Note:** 
-Even if the extended Flin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible at all.
+Even if the extended Flin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible.
 
 ## Compatibility
 
