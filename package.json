@@ -1,6 +1,6 @@
 {
   "name": "flin",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Flin. A tiny Javascript library.",
   "homepage": "http://flin.jaysalvat.com",
   "main": "./dist/flin.js",

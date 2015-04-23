@@ -1,4 +1,4 @@
-/*! Flin v0.1.9 (c) 2015 Jay Salvat http://flin.jaysalvat.com */
+/*! Flin v0.2.0 (c) 2015 Jay Salvat http://flin.jaysalvat.com */
 /* global define: true */
 /* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
 
@@ -151,7 +151,7 @@
         }
     };
 
-    $.flin = '0.1.9';
+    $.flin = '0.2.0';
 
     return $;
 });
