@@ -92,6 +92,7 @@ A better documentation coming soon...
 - $('elmt').off()
 - $('elmt').trigger()
 
+
 - $('elmt').set('.classname')
 - $('elmt').set('.classname', 'remove')
 - $('elmt').set('.classname', 'toggle')
