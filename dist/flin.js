@@ -1,4 +1,4 @@
-/*! Pin v0.1.9 (c) 2015 Jay Salvat http://pin.jaysalvat.com */
+/*! Flin v0.1.9 (c) 2015 Jay Salvat http://flin.jaysalvat.com */
 /* global define: true */
 /* jshint eqeqeq: false, loopfunc: true, laxbreak: true */
 
@@ -10,17 +10,17 @@
     } else if (typeof define == 'function' && define.amd) {
         define([], factory);
     } else {
-        context.Pin = factory();
+        context.Flin = factory();
 
         if (context.$ === undefined) {
-            context.$ = context.Pin;
+            context.$ = context.Flin;
         }
     }
 })(this, function () {
     'use strict';
 
     var $,
-        pin   = {}, 
+        flin   = {}, 
         win   = window,
         doc   = document,
         div   = doc.createElement('div'),
@@ -37,13 +37,13 @@
             '*':     div
         };
 
-    pin.init = function (selector, context) {
+    flin.init = function (selector, context) {
         var elmts;
 
         if (!selector) {
-            return new pin.Collection();
+            return new flin.Collection();
         }
-        else if (selector._pin) {
+        else if (selector._flin) {
             return selector;
         }
         else if (selector instanceof Function) {
@@ -56,7 +56,7 @@
             selector = selector.trim();
 
             if (selector[0] == '<') {
-                elmts = pin.fragment(selector);
+                elmts = flin.fragment(selector);
             }
             else if (context) {
                 return $(context).find(selector);
@@ -72,12 +72,12 @@
             elmts = [ selector ];
         }
 
-        return new pin.Collection(elmts);
+        return new flin.Collection(elmts);
     };
 
-    pin.Collection = function (elmts) {
+    flin.Collection = function (elmts) {
         elmts = [].slice.call(elmts || []);
-        elmts._pin = true;
+        elmts._flin = true;
 
         $.each($.fn, function (i) {
             elmts[i] = $.fn[i];
@@ -86,7 +86,7 @@
         return elmts;
     };
 
-    pin.fragment = function (html) {
+    flin.fragment = function (html) {
         var container,
             name = html.match(/^\s*<(\w+|!)[^>]*>/)[1];
 
@@ -101,7 +101,7 @@
     };
 
     $ = function (selector, context) {
-        return pin.init(selector, context);
+        return flin.init(selector, context);
     };
 
     $.each = function (elmts, fn) {
@@ -127,7 +127,7 @@
     };
 
     $.uniq = function (elmts) {
-        var elmts = [].filter.call(elmts, function (elmt, idx) { 
+        elmts = [].filter.call(elmts, function (elmt, idx) { 
             return elmts.indexOf(elmt) == idx;
         });
 
@@ -151,7 +151,7 @@
         }
     };
 
-    $.pin = '0.1.9';
+    $.flin = '0.1.9';
 
     return $;
 });

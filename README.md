@@ -1,19 +1,19 @@
-Pin. A tiny Javascript library.
-===============================
+Flin. A tiny Javascript library.
+================================
 
 A taste of jQuery without the fat.
 
-[![Build Status](https://travis-ci.org/jaysalvat/pin.png?branch=master)](https://travis-ci.org/jaysalvat/pin)
-[![Bower version](https://badge.fury.io/bo/pin.svg)](http://badge.fury.io/bo/pin)
+[![Build Status](https://travis-ci.org/jaysalvat/flin.png?branch=master)](https://travis-ci.org/jaysalvat/flin)
+[![Bower version](https://badge.fury.io/bo/flin.svg)](http://badge.fury.io/bo/flin)
 
-Pin is a tiny AMD-ready Javascript library (~1,5Kb minified, ~900 bytes GZIPed) bringing some jQuery sugar 
+Flin is a tiny AMD-ready Javascript library (~1,5Kb minified, ~900 bytes GZIPed) bringing some jQuery sugar 
 to your vanilla javascript developments such as selectors, iterations, DOM element creation and plugins.
 
-     npm install pinjs
+     npm install flin
 
 Or the [bower](http://bower.io) way.
 
-     bower install pinjs
+     bower install flin
 
 Examples
 --------
@@ -48,10 +48,10 @@ Some examples.
         alert('The DOM is loaded.');
     });
 
-Pin extended
-------------
+Flin extended
+-------------
 
-The extended version of Pin (~5.5Kb minified, ~2.5kb GZIPed) provides some extra DOM traversing, DOM/classes/styles 
+The extended version of Flin (~5.5Kb minified, ~2.5kb GZIPed) provides some extra DOM traversing, DOM/classes/styles 
 manipulation, and namespaced Events methods.
 
 A better documentation coming soon...
@@ -104,7 +104,7 @@ A better documentation coming soon...
 No Ajax methods planned.
 
 **Important Note:** 
-Even if the extended Pin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible at all.
+Even if the extended Flin API is near jQuery API, its goal is ABSOLUTELY NOT to be compatible at all.
 
 ## Compatibility
 

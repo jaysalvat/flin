@@ -32,7 +32,7 @@
     var settings = {
         banner: {
             content: [
-                '/*! Pin v<%= pkg.version %> (c) <%= year %> Jay Salvat http://pin.jaysalvat.com */',
+                '/*! Flin v<%= pkg.version %> (c) <%= year %> Jay Salvat http://flin.jaysalvat.com */',
                 ''
             ].join('\n'),
             vars: {
@@ -65,7 +65,7 @@
     });
 
     gulp.task('zip', [ 'tmp-create' ], function () {
-        var filename = 'pin.zip';
+        var filename = 'flin.zip';
 
         return gulp.src('./dist/*')
             .pipe(zip(filename))
@@ -209,7 +209,7 @@
     });
 
     gulp.task('copy-lite', function () {
-        return gulp.src('./src/pin.js')
+        return gulp.src('./src/flin.js')
             .pipe(stripCode({
                 start_comment: 'extended-code',
                 end_comment: 'end-extended-code'
@@ -244,11 +244,11 @@
         return gulp.src('./dist/**/*.min.js')
             .pipe(size({
                 gzip: true,
-                'pin.min.js': {
+                'flin.extended.min.js': {
                     'maxSize': 6000,
                     'maxGzippedSize': 2500
                 },
-                'pin.lite.min.js': {
+                'flin.min.js': {
                     'maxSize': 2000,
                     'maxGzippedSize': 1000
                 }

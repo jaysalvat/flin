@@ -1,6 +1,6 @@
 {
-  "name": "pinjs",
+  "name": "flin",
   "version": "0.1.9",
-  "homepage": "https://pin.jaysalvat.com",
-  "main": "./dist/pin.min.js"
+  "homepage": "https://flin.jaysalvat.com",
+  "main": "./dist/flin.min.js"
 }

@@ -1,15 +1,15 @@
 /*
-Pin
+Flin
 Copyright (c) 2014 Jay Salvat
 */
 
-/* global Pin:true, QUnit:true */
+/* global Flin:true, QUnit:true */
 
 (function ($) {
     "use strict";
 
-    QUnit.test('Pin', function (assert) {
-        assert.ok($()._pin);
+    QUnit.test('Flin', function (assert) {
+        assert.ok($()._flin);
         assert.equal($().length, 0);
     });
 
@@ -500,4 +500,4 @@ Copyright (c) 2014 Jay Salvat
         assert.equal($$.outerHeight(), 220);
         assert.equal($$.get(':height'), '200px');
     });
-})(Pin);
+})(Flin);
