@@ -22,31 +22,39 @@ Some examples.
 
 ### Selectors
 
-    $('.example').each(function () {
-        this.style.display = 'none';
-    });
+```javascript
+$('.example').each(function () {
+    this.style.display = 'none';
+});
+```
 
 ### Element creation with HTML
 
-    $('<h1>Example</h1><div class="example"></div>').each(function () {
-        document.body.appendChild(this);
-    });
+```javascript
+$('<h1>Example</h1><div class="example"></div>').each(function () {
+    document.body.appendChild(this);
+});
+```
 
 ### Plugin
 
-    $.fn.hide = function () {
-        return this.each(function () {
-            this.style.display = 'none';
-        });
-    };
+```javascript
+$.fn.hide = function () {
+    return this.each(function () {
+        this.style.display = 'none';
+    });
+};
 
-    $('.example').hide();
+$('.example').hide();
+```
 
 ### DOM loaded
 
-    $(function () {
-        alert('The DOM is loaded.');
-    });
+```javascript
+$(function () {
+    alert('The DOM is loaded.');
+});
+```
 
 Flin extended
 -------------
@@ -56,50 +64,50 @@ manipulation, and namespaced Events methods.
 
 A better documentation coming soon...
 
-    * $.extend
-    * $.uniq
-    * $.each
+* $.extend()
+* $.uniq()
+* $.each()
 
-    * $('elmts').width()
-    * $('elmts').height()
-    * $('elmts').outerWidth()
-    * $('elmts').outerHeight()
+* $('elmts').width()
+* $('elmts').height()
+* $('elmts').outerWidth()
+* $('elmts').outerHeight()
 
-    * $('elmts').find()
-    * $('elmts').each()
-    * $('elmts').slice()
+* $('elmts').find()
+* $('elmts').each()
+* $('elmts').slice()
 
-    * $('elmt').parent()
-    * $('elmt').parents()
-    * $('elmt').children()
-    * $('elmt').closest()
+* $('elmt').parent()
+* $('elmt').parents()
+* $('elmt').children()
+* $('elmt').closest()
 
-    * $('elmt').eq()
-    * $('elmt').index()
-    * $('elmt').has()
-    * $('elmt').is()
+* $('elmt').eq()
+* $('elmt').index()
+* $('elmt').has()
+* $('elmt').is()
 
-    * $('elmt').append()
-    * $('elmt').prepend()
-    * $('elmt').before()
-    * $('elmt').after()
-    * $('elmt').wrap()
-    * $('elmt').replace()
+* $('elmt').append()
+* $('elmt').prepend()
+* $('elmt').before()
+* $('elmt').after()
+* $('elmt').wrap()
+* $('elmt').replace()
 
-    * $('elmt').on()
-    * $('elmt').off()
-    * $('elmt').trigger()
+* $('elmt').on()
+* $('elmt').off()
+* $('elmt').trigger()
 
-    * $('elmt').set('.classname')
-    * $('elmt').set('.classname', 'remove')
-    * $('elmt').set('.classname', 'toggle')
-    * $('elmt').get('.classname')
+* $('elmt').set('.classname')
+* $('elmt').set('.classname', 'remove')
+* $('elmt').set('.classname', 'toggle')
+* $('elmt').get('.classname')
 
-    * $('elmt').set('@src', '');
-    * $('elmt').get('@src')
+* $('elmt').set('@src', '');
+* $('elmt').get('@src')
 
-    * $('elmt').set(':color', 'red')
-    * $('elmt').get(':Color')
+* $('elmt').set(':color', 'red')
+* $('elmt').get(':Color')
 
 No Ajax methods planned.
 
