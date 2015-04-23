@@ -2,7 +2,7 @@
   "name": "flin",
   "version": "0.1.9",
   "description": "Flin. A tiny Javascript library.",
-  "homepage": "http://pin.jaysalvat.com",
+  "homepage": "http://flin.jaysalvat.com",
   "main": "./dist/flin.js",
   "scripts": {
     "test": "gulp test",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jaysalvat/pin"
+    "url": "https://github.com/jaysalvat/flin"
   },
   "keywords": [
     "javascript",
