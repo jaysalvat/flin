@@ -4,6 +4,7 @@ Flin. A tiny Javascript library.
 A taste of jQuery without the fat.
 
 [![Build Status](https://travis-ci.org/jaysalvat/flin.png?branch=master)](https://travis-ci.org/jaysalvat/flin)
+[![npm version](https://badge.fury.io/js/flin.svg)](http://badge.fury.io/js/flin)
 [![Bower version](https://badge.fury.io/bo/flin.svg)](http://badge.fury.io/bo/flin)
 
 Flin is a tiny AMD-ready Javascript library (~1,5Kb minified, ~900 bytes GZIPed) bringing some jQuery sugar 
