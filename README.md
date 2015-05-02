@@ -7,7 +7,7 @@ A taste of jQuery without the fat.
 [![npm version](https://badge.fury.io/js/flin.svg)](http://badge.fury.io/js/flin)
 [![Bower version](https://badge.fury.io/bo/flin.svg)](http://badge.fury.io/bo/flin)
 
-Flin is a tiny AMD-ready Javascript library (~1,5Kb minified, ~900 bytes GZIPed) bringing some jQuery sugar 
+Flin is a tiny UMD-ready Javascript library (~1,5Kb minified, ~900 bytes GZIPed) bringing some jQuery sugar 
 to your vanilla javascript developments such as selectors, iterations, DOM element creation and plugins.
 
      npm install flin
