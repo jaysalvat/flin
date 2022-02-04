@@ -19,7 +19,7 @@
     'use strict';
 
     var $,
-        flin   = {}, 
+        flin  = {}, 
         win   = window,
         doc   = document,
         div   = doc.createElement('div'),
